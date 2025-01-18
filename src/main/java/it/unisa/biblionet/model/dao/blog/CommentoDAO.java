@@ -14,9 +14,4 @@ public interface CommentoDAO extends JpaRepository<Commento,Integer>{
     @Query("Select c from Commento c")
     List<Commento> findAllCommenti();
 
-    @Query("DELETE FROM Commento c WHERE c.id = :commentoId")
-    void deleteByCommentoId(int commentoId);
-
-
-
 }

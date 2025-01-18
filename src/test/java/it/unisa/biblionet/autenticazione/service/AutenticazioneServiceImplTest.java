@@ -25,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-/**
- */
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class AutenticazioneServiceImplTest {

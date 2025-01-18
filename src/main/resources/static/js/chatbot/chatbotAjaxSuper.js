@@ -1,60 +1,155 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const chatbotToggler = document.querySelector("#chatbot-toggler"); // Pulsante (icona) in basso
-    const headerClose = document.querySelector("#header-close");       // X in alto
-    const chatbox = document.querySelector("#chatbox");               // ul.chatbox
+    const chatbotToggler = document.querySelector("#chatbot-toggler");
+    const headerClose = document.querySelector("#header-close");
+    const chatbox = document.querySelector("#chatbox");
 
     let chatInizializzata = false;
 
-    // =========================================================
-    // (1) Carichiamo sempre i messaggi all'avvio
-    // =========================================================
-    loadSessionMessages();
+    let chatState = {
+        chatAperta: false,
+        messaggi: [],
+        context: 'initial',
+        selectedResponseId: null
+    };
 
-    // =========================================================
-    // (2) Se l'utente aveva lasciato il chatbot aperto, lo riapro
-    // =========================================================
-    const wasChatOpen = localStorage.getItem("chatOpen") === "true";
-    if (wasChatOpen) {
-        document.body.classList.add("show-chatbot");
+    // ---------------------------------------------
+    // Funzione di reset
+    // ---------------------------------------------
+    function resetChat() {
+        chatState = {
+            chatAperta: false,
+            messaggi: [],
+            context: 'initial',
+            selectedResponseId: null
+        };
+        chatbox.innerHTML = "";
+        chatInizializzata = false;
+        salvaStatoChat();
+
     }
 
-    // -----------------------------
-    // 1) Messaggi base (incoming/outgoing)
-    // -----------------------------
-    function addIncomingMessage(testo) {
+    // ---------------------------------------------
+    // Ripristino stato chat da sessionStorage
+    // ---------------------------------------------
+    function ripristinaStatoChat() {
+        const salvato = sessionStorage.getItem("chatState");
+        if (salvato) {
+            chatState = JSON.parse(salvato);
+
+            if (chatState.chatAperta) {
+                document.body.classList.add("show-chatbot");
+                chatbox.innerHTML = "";
+
+                if (chatState.messaggi.length > 0) {
+                    chatState.messaggi.forEach(msg => {
+                        if (msg.tipo === "incoming") {
+                            addIncomingMessage(msg.testo, false);
+                        } else if (msg.tipo === "outgoing") {
+                            addOutgoingMessage(msg.testo, false);
+                        }
+                    });
+                    chatInizializzata = true;
+                }
+
+                if (chatState.context === 'risposte') {
+                    caricaRisposteAppend();
+                } else if (chatState.context === 'domanda' && chatState.selectedResponseId) {
+                    caricaDomanda(chatState.selectedResponseId);
+                }
+            }
+        }
+    }
+
+    function salvaStatoChat() {
+        sessionStorage.setItem("chatState", JSON.stringify(chatState));
+    }
+
+    // ---------------------------------------------
+    // Funzione di inizializzazione chat
+    // ---------------------------------------------
+    function initializeChat() {
+        if (chatInizializzata || chatState.messaggi.length > 0) {
+            return;
+        }
+
+        chatbox.innerHTML = "";
+        addIncomingMessage("Ciao, come posso aiutarti?");
+        addChoiceButtons([
+            { text: "Determina genere libri", dataId: "genere-libri" },
+            { text: "Info sul sito", dataId: "info-sito" }
+        ]);
+
+        chatInizializzata = true;
+        chatState.chatAperta = true;
+        salvaStatoChat();
+    }
+
+    // ---------------------------------------------
+    // Apertura/Chiusura/Toggle Chat
+    // ---------------------------------------------
+    chatbotToggler.addEventListener("click", () => {
+        if (!document.body.classList.contains("show-chatbot")) {
+            if (!chatInizializzata) {
+                initializeChat();
+            } else {
+                document.body.classList.add("show-chatbot");
+                chatState.chatAperta = true;
+                salvaStatoChat();
+            }
+        } else {
+            resetChat();
+        }
+    });
+
+    headerClose?.addEventListener("click", () => {
+        document.body.classList.remove("show-chatbot");
+        chatState.chatAperta = false;
+        salvaStatoChat();
+    });
+
+    // ---------------------------------------------
+    // Funzioni per i messaggi base
+    // ---------------------------------------------
+    function addIncomingMessage(testo, salva = true) {
         const li = document.createElement("li");
         li.classList.add("chat", "incoming");
         li.innerHTML = `
             <span class="material-symbols-outlined">smart_toy</span>
-            <div>
-                <p>${testo}</p>
-            </div>
+            <p>${testo}</p>
         `;
         chatbox.appendChild(li);
         chatbox.scrollTop = chatbox.scrollHeight;
 
-        storeMessageInSession("incoming", testo, null, null, null);
+        if (salva) {
+            chatState.messaggi.push({ tipo: 'incoming', testo });
+            salvaStatoChat();
+        }
     }
 
-    function addOutgoingMessage(testo) {
+    function addOutgoingMessage(testo, salva = true) {
         const li = document.createElement("li");
         li.classList.add("chat", "outgoing");
-        li.innerHTML = `<div><p>${testo}</p></div>`;
+        li.innerHTML = `<p>${testo}</p>`;
         chatbox.appendChild(li);
         chatbox.scrollTop = chatbox.scrollHeight;
 
-        storeMessageInSession("outgoing", testo, null, null, null);
+        if (salva) {
+            chatState.messaggi.push({ tipo: 'outgoing', testo });
+            salvaStatoChat();
+        }
     }
 
-    // -----------------------------
-    // 2) Scelta Iniziale (opzioni)
-    // -----------------------------
-    function addChoiceButtons(choices, sendPhase = true) {
+    // ---------------------------------------------
+    // Bottoni di scelta iniziali
+    // ---------------------------------------------
+    function addChoiceButtons(choices) {
         const li = document.createElement("li");
         li.classList.add("chat", "incoming");
-        li.innerHTML = `<span class="material-symbols-outlined">smart_toy</span><div><p></p></div>`;
+        li.innerHTML = `<span class="material-symbols-outlined">smart_toy</span>`;
 
-        const p = li.querySelector("p");
+        const div = document.createElement("div");
+        const p = document.createElement("p");
+
         choices.forEach(choice => {
             const button = document.createElement("button");
             button.classList.add("scelta-button", "chatbot-button");
@@ -63,70 +158,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
             button.addEventListener("click", () => {
                 addOutgoingMessage(choice.text);
+
                 if (choice.dataId === "genere-libri") {
                     caricaDeterminaGenere();
                 } else if (choice.dataId === "info-sito") {
-                    caricaInfoSito();
+                    caricaRisposteAppend();
                 }
+
                 li.remove();
             });
 
             p.appendChild(button);
         });
 
+        div.appendChild(p);
+        li.appendChild(div);
         chatbox.appendChild(li);
         chatbox.scrollTop = chatbox.scrollHeight;
-
-        if (sendPhase) {
-            storeMessageInSession("fase", "CHOICE", null, null, "CHOICE");
-        }
     }
 
-    // -----------------------------
-    // 3) Caricare Domande (FAQ)
-    // -----------------------------
-    function caricaDomandeAppend() {
+    // ---------------------------------------------
+    // Esempi di altre funzioni esistenti (non cambiate)
+    // ---------------------------------------------
+    function caricaRisposteAppend() {
+        if(chatState.context !== "risposte") {
+            addIncomingMessage("Ecco le info sul sito: ....");
+        }
+        chatState.context = 'risposte';
+        salvaStatoChat();
+
         $.ajax({
-            url: "/bot/domande",
+            url: "/bot/risposte",
             method: "GET",
             success: function(html) {
                 chatbox.insertAdjacentHTML("beforeend", html);
                 attachDomandaClickEvents();
                 chatbox.scrollTop = chatbox.scrollHeight;
-
-                storeMessageInSession("fase", "DISPLAY_DOMANDE", null, null, "DISPLAY_DOMANDE");
             },
             error: function() {
-                addIncomingMessage("Errore nel caricamento delle domande.");
+                addIncomingMessage("Errore nel caricamento delle FAQ.");
             }
         });
     }
 
+
     function attachDomandaClickEvents() {
-        const bottoniDomanda = document.querySelectorAll(".domanda-button");
-        bottoniDomanda.forEach(bottone => {
+        const bottoniRisposta = document.querySelectorAll(".risposta-button");
+
+        bottoniRisposta.forEach(bottone => {
             bottone.addEventListener("click", () => {
-                const domandaIdStr = bottone.getAttribute("data-id");
-                const domandaId = parseInt(domandaIdStr, 10);
-                const testoDomanda = bottone.textContent || "Domanda selezionata";
-                const linkDomanda = bottone.getAttribute("data-link");
+                const rispostaId = bottone.getAttribute("data-id");
+                const testoRis = bottone.textContent || "Domanda selezionata";
+                addOutgoingMessage(testoRis);
 
-                addOutgoingMessage(testoDomanda);
-
-                if (linkDomanda) {
-                    localStorage.setItem("chatOpen", "true");
-                    window.location.href = linkDomanda;
-                }
+                // Chiamata alla funzione caricaDomanda
+                caricaDomanda(rispostaId);
 
                 $.ajax({
-                    url: `/bot/${domandaId}/risposte`,
+                    url: `/bot/${rispostaId}/domanda`,
                     method: "GET",
                     success: function(html) {
                         chatbox.insertAdjacentHTML("beforeend", html);
-                        attachRispostaClickEvents();
                         chatbox.scrollTop = chatbox.scrollHeight;
-
-                        storeMessageInSession("fase", "DISPLAY_RISPOSTE", domandaId, null, "DISPLAY_RISPOSTE");
                     },
                     error: function() {
                         addIncomingMessage("Errore nel caricamento delle risposte.");
@@ -136,69 +229,38 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function addAssistenzaButton() {
-        const li = document.createElement("li");
-        li.classList.add("chat", "incoming");
-        li.innerHTML = `
-            <span class="material-symbols-outlined">smart_toy</span>
-            <div>
-                <p>
-                    <a href="mailto:assistenza@biblionet.it" class="assistenza-button">
-                        Se la risposta non ti ha soddisfatto,
-                        Contatta Assistenza
-                    </a>
-                </p>
-            </div>
-        `;
-        chatbox.appendChild(li);
-        chatbox.scrollTop = chatbox.scrollHeight;
-    }
 
-    function attachRispostaClickEvents() {
-        const bottoniRisposta = document.querySelectorAll(".risposta-button");
-        bottoniRisposta.forEach(bottone => {
-            bottone.addEventListener("click", () => {
-                const rispostaIdStr = bottone.getAttribute("data-idRisposta");
-                const rispostaId = parseInt(rispostaIdStr, 10);
-                const testoRisposta = bottone.textContent || "Risposta selezionata";
+    function caricaDomanda(rispostaId) {
+        // Aggiungi un messaggio in arrivo per indicare che la domanda viene caricata
+        if(chatState.context !== "domanda") {
+            addIncomingMessage("Sto caricando la tua domanda...");
+        }
 
-                addOutgoingMessage(testoRisposta);
-                bottone.disabled = true;
-
-                storeMessageInSession("fase", "ANSWER_SELECTED", null, rispostaId, "ANSWER_SELECTED");
-            });
-        });
-    }
-
-    // -----------------------------
-    // 4) Info sito + Determina genere
-    // -----------------------------
-    function caricaInfoSito() {
-        addIncomingMessage("Ecco le info sul sito: ....");
-        storeMessageInSession("fase", null, null, null, "DISPLAY_DOMANDE");
-        caricaDomandeAppend();
-    }
-
-    function inviaRisposteSelezionate() {
-
-        // Invia le risposte selezionate al backend con AJAX
         $.ajax({
-            url: '/bot/calcolaGenere',
-            method: 'POST',
-            contentType: 'application/json',
+            url: `/bot/${rispostaId}/domanda`,
+            method: "GET",
+            success: function(html) {
+                // Inserisci l'HTML della domanda nella chat
+                chatbox.insertAdjacentHTML("beforeend", html);
+                chatbox.scrollTop = chatbox.scrollHeight;
 
-            success: function (data) {
-                // Mostra il genere predominante
-                addIncomingMessage(data)
+                // Riattacca gli event listener per i nuovi bottoni della domanda
+                attachDomandaClickEvents();
+
+                // Aggiorna lo stato della chat
+                chatState.context = 'domanda';
+                chatState.selectedResponseId = rispostaId;
+                salvaStatoChat();
             },
-            error: function (xhr, status, error) {
-                console.error("Errore:", error);
-                alert("Si è verificato un errore durante il calcolo del genere predominante.");
+            error: function() {
+                addIncomingMessage("Errore nel caricamento della domanda.");
             }
         });
     }
 
-
+    // ---------------------------------------------
+    // Logica Questionario
+    // ---------------------------------------------
     function caricaDeterminaGenere() {
         addIncomingMessage("Carico il questionario per determinare il tuo genere preferito...");
 
@@ -207,9 +269,9 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "GET",
             success: function(data) {
                 if (data.questionarioCompletato) {
-                    addIncomingMessage("Il questionario è già completato o non ci sono domande disponibili.");
+                    addIncomingMessage("Questionario non disponibile o già completato.");
                 } else {
-                    mostraProssimaDomanda(data.prossimaDomanda, data.indiceDomanda);
+                    mostraProssimaDomanda(data.prossimaRisposta, data.indiceRisposta);
                 }
             },
             error: function() {
@@ -218,350 +280,115 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
-    function mostraProssimaDomanda(domanda, indiceDomanda) {
+    function mostraProssimaDomanda(risposta, indiceRisposta) {
         const li = document.createElement("li");
         li.classList.add("chat", "incoming");
         li.innerHTML = `
-        <span class="material-symbols-outlined">smart_toy</span>
-        <div>
-            <p>${domanda.contenuto}</p>
-            <div id="risposte-container">
-                ${domanda.risposte.map(risposta => `
-                    <button class="questionario-button" data-id="${risposta.idRisposta}">
-                        ${risposta.contenuto}
-                    </button>
-                `).join("")}
-            </div>
-        </div>
-    `;
-
-        // Aggiungi la domanda alla chatbox
-        chatbox.appendChild(li);
-
-        // Controllo del pulsante "Invia"
-        let inviaRispostaButton = document.querySelector("#invia-risposta");
-        if (!inviaRispostaButton) {
-            inviaRispostaButton = document.createElement("button");
-            inviaRispostaButton.id = "invia-risposta";
-            inviaRispostaButton.disabled = true;
-            inviaRispostaButton.classList.add("risposta-button");
-            inviaRispostaButton.textContent = "Invia";
-
-            chatbox.appendChild(inviaRispostaButton);
-        } else {
-            inviaRispostaButton.removeEventListener("click", inviaRispostaHandler);
-            chatbox.appendChild(inviaRispostaButton);
+            <span class="material-symbols-outlined">smart_toy</span>
+            <div>
+                <p>${risposta.contenuto}</p>
+                <div>
+                    ${
+            risposta.domande.map(domanda => `
+                        <button class="questionario-button" data-id="${domanda.idDomanda}">
+                            ${domanda.contenuto}
+                        </button>
+                    `).join("")
         }
-
-        inviaRispostaHandler = () => inviaRisposta(indiceDomanda, inviaRispostaButton);
-        inviaRispostaButton.addEventListener("click", inviaRispostaHandler);
-
+                </div>
+            </div>
+        `;
+        chatbox.appendChild(li);
         chatbox.scrollTop = chatbox.scrollHeight;
-        attachQuestionarioClickEvents(indiceDomanda, inviaRispostaButton);
+
+        attachQuestionarioClickEvents(indiceRisposta);
     }
 
-    let inviaRispostaHandler = null;
+    function attachQuestionarioClickEvents(indiceRisposta) {
+        const bottoniQuestionario = document.querySelectorAll(".questionario-button");
+        bottoniQuestionario.forEach(bottone => {
+            bottone.addEventListener("click", () => {
+                bottoniQuestionario.forEach(btn => btn.classList.remove("selected"));
+                bottone.classList.add("selected");
 
-    function inviaRisposta(indiceDomanda, inviaRispostaButton) {
-        const selectedButton = document.querySelector(".questionario-button.selected");
-        if (!selectedButton) {
-            alert("Seleziona una risposta prima di inviare.");
+                const rispostaSelezionata = parseInt(bottone.dataset.id, 10);
+
+                $.ajax({
+                    url: `/bot/nextDomanda/${indiceRisposta}`,
+                    method: "GET",
+                    data: { domandaId: rispostaSelezionata },
+                    success: function(data) {
+                        if (data.questionarioCompletato) {
+                            addIncomingMessage("Grazie! Hai completato il questionario.");
+                            inviaRisposteSelezionate();
+                        } else {
+                            mostraProssimaDomanda(data.prossimaRisposta, data.indiceRisposta);
+                        }
+                    },
+                    error: function() {
+                        addIncomingMessage("Errore durante il caricamento della prossima domanda.");
+                    }
+                });
+            });
+        });
+    }
+
+    function inviaRisposteSelezionate() {
+        const risposteSelezionate = [...document.querySelectorAll(".questionario-button.selected")]
+            .map(r => parseInt(r.dataset.id, 10));
+
+        if (risposteSelezionate.length === 0) {
+            addIncomingMessage("Seleziona almeno una risposta prima di procedere!");
             return;
         }
 
-        const rispostaId = parseInt(selectedButton.dataset.id, 10);
-        const testoRisposta = selectedButton.textContent; // Ottieni il testo della risposta selezionata
-        // Mostra la risposta selezionata come messaggio outgoing nella chat
-        addOutgoingMessage(testoRisposta);
-
         $.ajax({
-            url: `/bot/nextDomanda/${indiceDomanda}`,
-            method: "GET",
-            data: {
-                indiceDomanda: indiceDomanda,
-                rispostaId: rispostaId
-            },
+            url: '/bot/calcolaGenere',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(risposteSelezionate),
             success: function(data) {
-
-                const questionarioRContainer = document.querySelector(".chat.incoming:last-child");
-                if (questionarioRContainer) {
-                    questionarioRContainer.remove();
-                }
-                if (data.questionarioCompletato) {
-                    if (inviaRispostaButton) {
-                        inviaRispostaButton.remove();
-                    }
-                    addIncomingMessage("Grazie! Hai completato il questionario.");
-                    mostraCalcolaGenereButton();
-                } else {
-                    mostraProssimaDomanda(data.prossimaDomanda, indiceDomanda + 1);
-                }
+                mostraGenerePreferitoInChat(data);
             },
             error: function() {
-                addIncomingMessage("Errore durante il caricamento della prossima domanda.");
+                addIncomingMessage("Si è verificato un errore durante il calcolo del genere predominante.");
             }
         });
     }
 
-
-    function attachQuestionarioClickEvents(indiceDomanda, inviaRispostaButton) {
-        const bottoniQuestionario = document.querySelectorAll(".questionario-button");
-        let rispostaSelezionata = null;
-
-        bottoniQuestionario.forEach(bottone => {
-            const nuovoBottone = bottone.cloneNode(true);
-            bottone.parentNode.replaceChild(nuovoBottone, bottone);
-
-            nuovoBottone.addEventListener("click", () => {
-                document.querySelectorAll(".questionario-button").forEach(btn => btn.classList.remove("selected"));
-                nuovoBottone.classList.add("selected");
-                rispostaSelezionata = parseInt(nuovoBottone.dataset.id, 10);
-                inviaRispostaButton.disabled = false;
-            });
-        });
-    }
-
-
-    function mostraCalcolaGenereButton() {
+    function mostraGenerePreferitoInChat(genere) {
         const li = document.createElement("li");
         li.classList.add("chat", "incoming");
         li.innerHTML = `
-    <span class="material-symbols-outlined">smart_toy</span>
-    <div>
-        <button id="calcola-genere-button" class="invia-button">Calcola Genere</button>
-    </div>
-    `;
+            <span class="material-symbols-outlined">smart_toy</span>
+            <div>
+                <p>Ecco il tuo genere preferito:</p>
+                <div>
+                    <button class="domanda-button" disabled style="opacity:0.7; cursor:not-allowed;">
+                        ${genere}
+                    </button>
+                </div>
+            </div>
+        `;
         chatbox.appendChild(li);
         chatbox.scrollTop = chatbox.scrollHeight;
-
-        document.querySelector("#calcola-genere-button").addEventListener("click", inviaRisposteSelezionate);
     }
 
 
-    // -----------------------------
-    // Gestione Sessione Spring (Ajax)
-    // -----------------------------
-    function storeMessageInSession(type, text, domandaId = null, rispostaId = null, fase = null) {
-        let data = { type, text };
-        if (domandaId) data.domandaId = domandaId;
-        if (rispostaId) data.rispostaId = rispostaId;
-        if (fase) data.fase = fase;
-
-        $.ajax({
-            url: "/bot/sessionChat",
-            method: "POST",
-            data: data,
-            success: function () {
-                console.log("Messaggio salvato in sessione:", data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Impossibile salvare il messaggio in sessione:", textStatus, errorThrown);
-            },
-        });
-    }
-
-    // -----------------------------
-    // Caricamento Messaggi dalla Sessione
-    // -----------------------------
-    function loadSessionMessages() {
-        $.ajax({
-            url: "/bot/getSessionBot",
-            method: "GET",
-            dataType: "json",
-            success: function (sessionData) {
-                console.log("Session Data:", sessionData);
-                const {
-                    messages,
-                    faseCorrente,
-                    domande,
-                    risposte,
-                    utenteValido,
-                    ultimaDomanda,
-                    ultimaRisposta
-                } = sessionData;
-
-                chatbox.innerHTML = "";
-
-                // Se l'utente non è valido, si riparte da zero
-                if (!utenteValido) {
-                    console.warn("Utente non valido, reimpostazione della sessione.");
-                    addIncomingMessage("Ciao, come posso aiutarti?");
-                    addChoiceButtons([
-                        { text: "Vuoi che ti aiuti a scegliere il genere Più adatto a te?", dataId: "genere-libri" },
-                        { text: "Vuoi che ti aiuti sulle funzionalità del sito?", dataId: "info-sito" }
-                    ]);
-                    return;
-                }
-
-                // Ricrea i messaggi passati
-                if (messages && messages.length > 0) {
-                    messages.forEach(msg => {
-                        if (msg.type === "incoming" || msg.type === "outgoing") {
-                            const li = document.createElement("li");
-                            li.classList.add("chat", msg.type);
-                            li.innerHTML = `<div><p>${msg.text}</p></div>`;
-                            chatbox.appendChild(li);
-                        }
-                    });
-                } else {
-                    // Se non ci sono messaggi, allora siamo all'avvio
-                    addIncomingMessage("Ciao, come posso aiutarti?");
-                    addChoiceButtons([
-                        { text: "Vuoi che ti aiuti a scegliere il genere Più adatto a te?", dataId: "genere-libri" },
-                        { text: "Vuoi che ti aiuti sulle funzionalità del sito?", dataId: "info-sito" }
-                    ]);
-                }
-
-                // Se la fase è presente, ricostruisci l'interfaccia
-                if (faseCorrente) {
-                    handlePhase(faseCorrente, ultimaDomanda, ultimaRisposta, domande, risposte);
-                }
-
-                chatbox.scrollTop = chatbox.scrollHeight;
-                chatInizializzata = true;
-            },
-            error: function () {
-                console.error("Errore nel recupero dello stato della chat");
-            }
-        });
-    }
-
-    // -----------------------------
-    // Ricostruisci la UI in base alla fase
-    // -----------------------------
-    function handlePhase(phase, domandaId, rispostaId, domande, risposte) {
-        console.log("handlePhase:", phase, domandaId, rispostaId, domande, risposte);
-        switch (phase) {
-            case "CHOICE":
-                addChoiceButtons(
-                    [
-                        { text: "Vuoi che ti aiuti a scegliere il genere Più adatto a te?", dataId: "genere-libri" },
-                        { text: "Vuoi che ti aiuti sulle funzionalità del sito?", dataId: "info-sito" },
-                    ],
-                    false
-                );
-                break;
-
-            case "DISPLAY_DOMANDE":
-                if (domande && domande.length > 0) {
-                    const li = document.createElement("li");
-                    li.classList.add("chat", "incoming");
-                    li.innerHTML = `
-                        <span class="material-symbols-outlined">smart_toy</span>
-                        <div><p>Seleziona una domanda:</p></div>
-                    `;
-                    const p = li.querySelector("p");
-
-                    domande.forEach((domanda) => {
-                        const button = document.createElement("button");
-                        button.classList.add("domanda-button");
-                        button.setAttribute("data-id", domanda.idDomanda);
-                        button.textContent = domanda.contenuto;
-                        button.setAttribute("data-link", domanda.mapLink);
-                        p.appendChild(button);
-                    });
-
-                    chatbox.appendChild(li);
-                    attachDomandaClickEvents();
-                    chatbox.scrollTop = chatbox.scrollHeight;
-                }
-                break;
-
-            case "DISPLAY_RISPOSTE":
-                const domandaSelezionata = domande?.find(d => d.idDomanda === domandaId);
-                if (domandaSelezionata) {
-                    addOutgoingMessage(domandaSelezionata.contenuto);
-                }
-
-                if (risposte && risposte.length > 0) {
-                    const li = document.createElement("li");
-                    li.classList.add("chat", "incoming");
-                    li.innerHTML = `
-                        <span class="material-symbols-outlined">smart_toy</span>
-                        <div><p>Seleziona una risposta:</p></div>
-                    `;
-                    const p = li.querySelector("p");
-
-                    risposte.forEach((r) => {
-                        const button = document.createElement("button");
-                        button.classList.add("risposta-button");
-                        button.setAttribute("data-idRisposta", r.idRisposta);
-                        button.textContent = r.contenuto;
-                        p.appendChild(button);
-                    });
-
-                    chatbox.appendChild(li);
-                    attachRispostaClickEvents();
-                    addAssistenzaButton();
-                    chatbox.scrollTop = chatbox.scrollHeight;
-                }
-                break;
-
-            case "ANSWER_SELECTED":
-                addIncomingMessage("Hai selezionato una risposta.");
-                break;
-
-            default:
-                console.warn("Fase non riconosciuta:", phase);
-        }
-    }
-
-    // =========================================================
-    // Apertura/Reset Chat con Gestione della Sessione
-    // =========================================================
     chatbotToggler.addEventListener("click", () => {
-        // Se la chat è chiusa, la apriamo
         if (!document.body.classList.contains("show-chatbot")) {
-            document.body.classList.add("show-chatbot");
-            localStorage.setItem("chatOpen", "true");
-
-            // Se non è stato inizializzato (per qualche motivo) ricarichiamo i messaggi
             if (!chatInizializzata) {
-                loadSessionMessages();
+                initializeChat();
             }
+            document.body.classList.add("show-chatbot");
+            chatState.chatAperta = true;
         } else {
-            // =========================================================
-            // (3) Se la chat era aperta e riclicchiamo, facciamo un RESET COMPLETO
-            // =========================================================
-            // 1) Chiudo visivamente
             document.body.classList.remove("show-chatbot");
-            chatInizializzata = false;
-            localStorage.setItem("chatOpen", "false");
-
-            // 2) Chiamo clearSession sul backend
-            $.ajax({
-                url: "/bot/clearSession",
-                method: "POST",
-                success: function () {
-                    console.log("Sessione della chat resettata");
-
-                    // 3) Svuoto la chatbox e mostro i messaggi iniziali
-                    chatbox.innerHTML = "";
-                    addIncomingMessage("Ciao, come posso aiutarti?");
-                    addChoiceButtons([
-                        { text: "Vuoi che ti aiuti a scegliere il genere Più adatto a te?", dataId: "genere-libri" },
-                        { text: "Vuoi che ti aiuti sulle funzionalità del sito?", dataId: "info-sito" }
-                    ]);
-
-                    // 4) (Facoltativo) Riapro subito la chat, oppure lascio che l'utente clicchi di nuovo
-                    document.body.classList.add("show-chatbot");
-                    localStorage.setItem("chatOpen", "true");
-                },
-                error: function() {
-                    console.error("Impossibile resettare la sessione della chat");
-                    addIncomingMessage("Errore nel resettare la sessione della chat.");
-                }
-            });
+            chatState.chatAperta = false;
+            salvaStatoChat();
         }
     });
 
-    // -----------------------------
-    // Chiusura con la X in alto
-    // -----------------------------
-    headerClose?.addEventListener("click", () => {
-        document.body.classList.remove("show-chatbot");
-        localStorage.setItem("chatOpen", "false");
-    });
+    // Inizializza lo stato della chat al caricamento
+    ripristinaStatoChat();
 });
-

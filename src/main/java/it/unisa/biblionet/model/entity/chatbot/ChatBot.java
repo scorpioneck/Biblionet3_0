@@ -27,14 +27,15 @@ public class ChatBot {
     @NonNull
     private boolean isEsperto;
 
-    @OneToMany(mappedBy = "chatbot")
-    @Where(clause = "categoria != 'QUESTIONARIO'") // Domande che NON sono QUESTIONARIO
-    @JsonManagedReference
-    List<Domanda> domandeBot;
 
     @OneToMany(mappedBy = "chatbot", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Where(clause = "categoria = 'QUESTIONARIO'")
     @JsonManagedReference
-    List<Domanda> domandeQuestionario;
+    List<Risposta> risposta1;
+
+    @OneToMany(mappedBy = "chatbot")
+    @Where(clause = "categoria != 'QUESTIONARIO'") // Domande che NON sono QUESTIONARIO
+    @JsonManagedReference
+    List<Risposta> risposta2;
 
 }

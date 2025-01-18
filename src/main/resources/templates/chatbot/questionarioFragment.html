@@ -3,13 +3,13 @@
         <span class="material-symbols-outlined">smart_toy</span>
         <div>
             <!-- Testo della domanda -->
-            <p th:text="${domanda.contenuto}">Domanda...</p>
+            <p th:text="${risposta.contenuto}">Domanda...</p>
             <div>
                 <!-- Bottoni delle risposte -->
-                <button class="risposta-button"
-                        th:each="risposta : ${domanda.risposte}"
-                        th:data-id="${risposta.idRisposta}"
-                        th:text="${risposta.contenuto}">
+                <button class="domanda-button"
+                        th:each="domanda : ${risposta.domande}"
+                        th:data-id="${domanda.idDomanda}"
+                        th:text="${domanda.contenuto}">
                 </button>
             </div>
             <!-- Pulsante per inviare la risposta -->

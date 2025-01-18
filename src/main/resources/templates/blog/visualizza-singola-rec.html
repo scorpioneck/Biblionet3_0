@@ -65,7 +65,7 @@
 
                                 <!-- Form Risposta -->
                                 <div class="form-risposta" th:attr="id='form-risposta-' + ${commento.id}" style="display: none; margin-top: 1em;">
-                                    <form th:action="@{/blog/{id}/gestisciCommentoRisposta(id=${recensione.id})}" method="post" th:object="${commentoForm}">
+                                    <form th:action="@{/blog/{id}/gestisciRisposta(id=${recensione.id})}" method="post" th:object="${commentoForm}">
                                         <input type="hidden" name="commentoPadreId" th:value="${commento.id}" />
                                         <label  th:field="*{title}"></label>
                                         <label for="description-risposta">Descrizione Risposta:</label>
