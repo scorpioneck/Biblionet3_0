@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio Recensione</title>
+    <link rel="stylesheet" href="/style/commento.css">
+    <script src="/js/blog/gestioneRecensioni.js" defer></script>
+</head>
+<body>
+<div layout:fragment="contenuto-pagina" class="container">
+
+    <!-- Sezione 1: Informazioni sul Libro -->
+    <div class="row">
+        <div class="card w-100 mb-4">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="card-title">Informazioni sul Libro</h3>
+                    <p><strong>Titolo:</strong> <span th:text="${recensione.libro.titolo}">Titolo Libro</span></p>
+                    <p><strong>Autore:</strong> <span th:text="${recensione.libro.autore}">Autore Libro</span></p>
+                    <p><strong>Descrizione:</strong> <span th:text="${recensione.libro.descrizione}">Descrizione Libro</span></p>
+                </div>
+                <div class="book-image-container">
+                    <img th:src="'data:image/png;base64,' + ${recensione.libro.immagineLibro}" alt="Immagine Libro"
+                         class="img-fluid rounded shadow-sm" style="height: 12em; width: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sezione 2: Descrizione della Recensione -->
+    <div class="row">
+        <div class="card w-100 mb-4">
+            <div class="card-body">
+                <h3 class="card-title">Descrizione della Recensione</h3>
+                <p th:text="${recensione.descrizione}">Descrizione della Recensione</p>
+                <p><strong>Esperto:</strong> <span th:text="${recensione.esperto.nome}">Nome Esperto</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sezione 3: Gestione Commenti e Risposte -->
+    <div class="row">
+        <div class="card w-100 mb-4">
+            <div class="card-body">
+                <h3 class="card-title">Commenti e Risposte</h3>
+
+                <div id="commenti">
+                    <ul>
+                        <!-- Loop sui commenti -->
+                        <li th:each="commento : ${recensione.commenti}" class="comment-item mb-4">
+                            <div class="comment">
+                                <strong class="comment-title" th:text="${commento.title}">Titolo Commento</strong>
+                                <p class="comment-description" th:text="${commento.description}">Descrizione Commento</p>
+                                <div th:if="${session.loggedUser != null && session.loggedUser.tipo == 'Esperto'}">
+                                    <form th:action="@{'/blog/' + ${recensione.id} + '/cancellaCommento'}" method="post">
+                                        <input type="hidden" name="idCommento" th:value="${commento.id}">
+                                        <button type="submit" class="btn btn-danger">Elimina</button>
+                                    </form>
+                                </div>
+
+                                <!-- Bottone Rispondi -->
+                                <button type="button" class="btn btn-primary btn-rispondi"
+                                        th:attr="data-commento-id=${commento.id}">Rispondi</button>
+
+                                <!-- Form Risposta -->
+                                <div class="form-risposta" th:attr="id='form-risposta-' + ${commento.id}" style="display: none; margin-top: 1em;">
+                                    <form th:action="@{/blog/{id}/gestisciRisposta(id=${recensione.id})}" method="post" th:object="${commentoForm}">
+                                        <input type="hidden" name="commentoPadreId" th:value="${commento.id}" />
+                                        <label  th:field="*{title}"></label>
+                                        <label for="description-risposta">Descrizione Risposta:</label>
+                                        <textarea th:field="*{description}" id="description-risposta" name="description" rows="4" required></textarea>
+                                        <button type="submit" class="btn btn-success">Invia Risposta</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Sezione Risposte -->
+                            <div>
+                                <h3>Risposte</h3>
+                                <ul>
+                                    <!-- Loop sulle risposte -->
+                                    <li th:each="risposta : ${commento.risposte}">
+                                        <strong th:text="${risposta.title}">Autore Risposta</strong>:
+                                        <span th:text="${risposta.description}">Testo della Risposta</span>
+
+                                        <!-- Cancella Risposta -->
+                                        <div th:if="${session.loggedUser != null && session.loggedUser.tipo == 'Esperto'}" class="response-actions">
+                                            <form th:action="@{'/blog/' + ${recensione.id} + '/cancellaCommentoRisposta'}" method="post">
+                                                <input type="hidden" name="idCommentoRisposta" th:value="${risposta.id}">
+                                                <button type="submit" class="btn btn-danger">Elimina</button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <!-- Nessuna risposta -->
+                                    <p th:if="${#lists.isEmpty(commento.risposte)}">Nessuna risposta ancora. Sii il primo a rispondere!</p>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- Aggiungi Commento -->
+                <div class="comment-form-container">
+                    <h4>Aggiungi un Commento</h4>
+                    <form th:action="@{/blog/{id}/gestisciCommento(id=${recensione.id})}" method="post" th:object="${commentoForm}">
+                        <label th:text="${title}"></label>
+                        <label for="description4">Descrizione:</label>
+                        <textarea th:field="*{description}" id="description4" name="description" rows="4" required></textarea>
+                        <button type="submit" class="btn btn-danger">Aggiungi Commento</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

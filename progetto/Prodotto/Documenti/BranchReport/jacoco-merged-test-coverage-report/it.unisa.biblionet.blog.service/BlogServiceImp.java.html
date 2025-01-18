@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlogServiceImp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">biblionet</a> &gt; <a href="index.source.html" class="el_package">it.unisa.biblionet.blog.service</a> &gt; <span class="el_source">BlogServiceImp.java</span></div><h1>BlogServiceImp.java</h1><pre class="source lang-java linenums">package it.unisa.biblionet.blog.service;
+
+
+import it.unisa.biblionet.model.dao.LibroDAO;
+import it.unisa.biblionet.model.dao.blog.CommentoDAO;
+import it.unisa.biblionet.model.dao.blog.CommentoRispostaDAO;
+import it.unisa.biblionet.model.dao.blog.RecensioneDAO;
+import it.unisa.biblionet.model.entity.Libro;
+import it.unisa.biblionet.model.entity.blog.Commento;
+import it.unisa.biblionet.model.entity.blog.CommentoRisposta;
+import it.unisa.biblionet.model.entity.blog.Recensione;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class BlogServiceImp implements BlogService {
+
+    /**
+     * Si occupa delle operazioni CRUD per una recensione.
+     */
+
+    private final RecensioneDAO recensioneDAO;
+
+    /**
+     * Si occupa delle operazioni CRUD per una recensione.
+     */
+
+    private final CommentoDAO commentoDAO;
+
+    /**
+     * Si occupa delle operazioni CRUD per una risposta.
+     */
+
+
+    private final CommentoRispostaDAO commentoRispostaDAO;
+
+    /**
+     * Si occupa delle operazioni CRUD per un libro.
+     */
+
+
+    private final LibroDAO libroDAO;
+
+
+    /** Implementa la funzionalità visualizzaRecensioni
+     * @return recensioni
+     */
+
+    @Override
+    public List&lt;Recensione&gt; visualizzaRecensioni() {
+<span class="fc" id="L57">        List&lt;Recensione&gt; recensioni = recensioneDAO.findAllRecensioni();</span>
+<span class="fc" id="L58">        return recensioni;</span>
+    }
+
+    /**
+     * @param id identificativo per la recensione
+     * @return recensione recuperata altrimenti lancia l'eccezione.
+     */
+    @Override
+    public Recensione trovaRecensioneById(final int id) {
+<span class="fc" id="L67">        return recensioneDAO.findById(id).orElseThrow(</span>
+<span class="nc" id="L68">                () -&gt; new EntityNotFoundException(&quot;Recensione non trovato&quot;+ id)</span>
+        );
+    }
+
+    /**
+     * Testa la funzionalità creaRecensione
+     * @param recensione
+     * @return recensione creata
+     */
+
+    @Override
+    public Recensione creaRecensione(final Recensione recensione) {
+<span class="fc" id="L80">        return this.recensioneDAO.save(recensione);</span>
+    }
+
+    /**
+     * Implementa la funzionalità modificaRecensione
+     * @param recensione
+     * @return recensione modificata
+     */
+
+    @Override
+    public Recensione modificaRecensione(final Recensione recensione) {
+<span class="fc" id="L91">        return this.recensioneDAO.save(recensione);</span>
+    }
+
+    /**
+     * Implementa la funzionalità eliminaRecensione
+     * @return recensione eliminata
+     */
+
+    @Override
+    public Recensione eliminaRecensione(final Recensione recensione) {
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (recensione != null) {</span>
+<span class="fc" id="L102">            List&lt;Commento&gt; commenti = new ArrayList&lt;&gt;(recensione.getCommenti());</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            for (Commento commento : commenti) {</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">                if (commentoDAO.existsById(commento.getId())) {</span>
+<span class="nc" id="L105">                    this.eliminaCommento(commento);</span>
+                }
+<span class="fc" id="L107">            }</span>
+        }
+
+<span class="fc" id="L110">        recensioneDAO.deleteById(recensione.getId());</span>
+<span class="fc" id="L111">        return recensione;</span>
+    }
+
+    /**
+     * Implementa la funzionalità visualizzaCommenti
+     * @return commenti lista
+     */
+
+    @Override
+    public List&lt;Commento&gt; visualizzaCommenti() {
+<span class="fc" id="L121">       List&lt;Commento&gt; commenti = commentoDAO.findAllCommenti();</span>
+
+<span class="fc" id="L123">       return commenti;</span>
+    }
+
+    /**
+     * Implementa la funzionalità scriviCommenti
+     * @return commento creato
+     */
+
+    @Override
+    public Commento scriviCommento(final Commento commento) {
+<span class="fc" id="L133">        return this.commentoDAO.save(commento);</span>
+    }
+
+    /**
+     * Implementa la funzionalità eliminaCommento
+     * @return commento cancellato
+     */
+
+    @Override
+    public Commento eliminaCommento(final Commento commento) {
+<span class="fc" id="L143">        Optional&lt;Recensione&gt; optionalRecensione = recensioneDAO.findById(commento.getRecensione().getId());</span>
+
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (optionalRecensione.isPresent()) {</span>
+<span class="nc" id="L146">            Recensione recensione = optionalRecensione.get();</span>
+<span class="nc" id="L147">            recensione.getCommenti().remove(commento);</span>
+        }
+
+<span class="fc" id="L150">        commentoDAO.deleteById(commento.getId());</span>
+<span class="fc" id="L151">        return commento;</span>
+    }
+    /**
+     * Implementa la funzionalità eliminaRisposta
+     * @param commento
+     * @return risposta al commento cancellato
+     */
+    @Override
+    public CommentoRisposta eliminaRisposta(final CommentoRisposta commento) {
+<span class="fc" id="L160">         Optional&lt;Commento&gt; optionalCommentoPadre = commentoDAO.findById(commento.getId());</span>
+
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">         if(optionalCommentoPadre.isPresent()) {</span>
+<span class="nc" id="L163">             Commento commentoPadre = optionalCommentoPadre.get();</span>
+<span class="nc" id="L164">             commentoPadre.getRisposte().remove(commento);</span>
+         }
+
+<span class="fc" id="L167">         commentoRispostaDAO.deleteById(commento.getId());</span>
+<span class="fc" id="L168">         return commento;</span>
+    }
+
+    /**Implementa la funzionalità di rispondere al commento
+     * @param risposta
+     * @return risposta al commento
+     */
+
+    @Override
+    public CommentoRisposta rispostaCommento(final CommentoRisposta risposta) {
+
+<span class="fc" id="L179">        return commentoRispostaDAO.save(risposta);</span>
+    }
+
+    /**
+     * Implementa la funzionalità di trovare la risposta al commento tramite l'id
+     * @param idRisposta
+     * @return risposta al commento
+     */
+
+    @Override
+    public Optional&lt;CommentoRisposta&gt; trovaRispostaById(final int idRisposta) {
+<span class="fc" id="L190">        return commentoRispostaDAO.findById(idRisposta);</span>
+    }
+
+    /** Implementa la funzionalità di trovare il commento tramite l'id
+     * @param id
+     * @return commento
+     */
+
+
+    @Override
+    public Optional&lt;Commento&gt; trovaCommentoById(final int id) {
+<span class="fc" id="L201">        return commentoDAO.findById(id);</span>
+    }
+
+    /** Implementa la funzionalità di visualizzare le risposte al commento
+     * @return risposte
+     */
+
+    @Override
+    public List&lt;CommentoRisposta&gt; visualizzaRisposte() {
+<span class="fc" id="L210">        return commentoRispostaDAO.findAllRisposta();</span>
+    }
+
+    /** Implementa la funzionalità di trovare i libri da caricare per la recensione
+     * @return risposte
+     */
+
+    @Override
+    public List&lt;Libro&gt; findAllLibri() {
+<span class="fc" id="L219">        return libroDAO.findAllLibro();</span>
+    }
+
+    /** Implementa la funzionalità di recuperare un libro dal db
+     * @param
+     * @return libro
+     */
+
+    @Override
+    public Libro findLibroById(final int id) {
+<span class="fc" id="L229">        return libroDAO.findById(id).orElseThrow(</span>
+<span class="nc" id="L230">                () -&gt; new EntityNotFoundException(&quot;Libro non trovato&quot;+ id)</span>
+        );
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

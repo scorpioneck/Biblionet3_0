@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Recensione</title>
+</head>
+
+
+<body>
+<div layout:fragment="contenuto-pagina">
+    <h1>Modifica Recensione</h1>
+    <div layout:insert="~{/blog/_recensione-form::recensione-form(action=@{/blog/{id}/modificaRecensione(id=${id})})}"></div>
+</div>
+</body>
+
+</html>

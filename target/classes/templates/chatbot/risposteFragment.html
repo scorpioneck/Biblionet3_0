@@ -1,0 +1,15 @@
+<ul th:fragment="risposteList" class="chatbox">
+    <li class="chat incoming">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <div>
+            <p>
+                <!-- Itera sui bottoni all'interno di un unico <p> -->
+                <span th:each="risposta : ${risposte}">
+                    <button class="risposta-button" th:data-id="${risposta.idRisposta}" th:text="${risposta.contenuto}"
+                            th:data-link="${risposta.mapLink}" ></button>
+                </span>
+            </p>
+        </div>
+    </li>
+
+</ul>

@@ -1,0 +1,9 @@
+<ul th:fragment="chatList" class="chatbox">
+    <li th:each="msg : ${messages}"
+        th:classappend="' chat ' + ${msg.type}">
+        <span th:if="${msg.type == 'incoming'}" class="material-symbols-outlined">smart_toy</span>
+        <div>
+            <p th:text="${msg.text}"></p>
+        </div>
+    </li>
+</ul>

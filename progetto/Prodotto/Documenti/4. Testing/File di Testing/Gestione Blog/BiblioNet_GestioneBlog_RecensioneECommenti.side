@@ -1,0 +1,1590 @@
+{
+  "id": "1d233c1a-82c2-4d5d-8be2-3f354e6877bd",
+  "version": "2.0",
+  "name": "GestioneBlog",
+  "url": "http://localhost:8080",
+  "tests": [{
+    "id": "42a9b51a-1f9e-46e5-90c5-c33ddbb1bfe7",
+    "name": "TC_4.1_1",
+    "commands": [{
+      "id": "e155b19c-f5ac-4dcc-850f-fda8d68d27e7",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c77fb7a5-58cc-4a9d-a5e1-5be4262dc72b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7b264bbc-91ef-4f0f-9908-22de372b64a2",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "28a56172-484a-4d7c-b722-65917cbf0595",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0238cdba-146b-4755-ab5a-0c9c4fc5d80a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Crea Recensione",
+      "targets": [
+        ["linkText=Crea Recensione", "linkText"],
+        ["css=th > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Crea Recensione')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/inizializzaCreaR')]", "xpath:href"],
+        ["xpath=//th/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Crea Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "44a8ad1a-108d-43ac-b962-ddc7b119b6ae",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "42151c3a-ab07-4a1e-82d0-7a808595ebc1",
+      "comment": "",
+      "command": "type",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowling, è una delle serie più iconiche e amate della letteratura moderna. Ambientata in un mondo magico parallelo al nostro, la storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia, Harry si immerge in un mondo incantato fatto di pozioni, incantesimi, creature magiche e misteri.  La trama si sviluppa attraverso sette volumi, ognuno corrispondente a un anno scolastico di Harry. Mentre il protagonista stringe amicizie profonde con Hermione Granger e Ron Weasley, deve affrontare sfide sempre più pericolose, culminanti nello scontro con il malvagio Lord Voldemort, il mago oscuro che ha ucciso i suoi genitori e cerca di conquistare il mondo magico."
+    }, {
+      "id": "b88f58b4-b981-47f5-acfd-35bf6d7dac1e",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "50765a0e-dc49-44fb-8b3c-ffddd6683539",
+      "comment": "",
+      "command": "type",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "dasdsada"
+    }, {
+      "id": "2a025d58-7a5f-4b22-a083-27b943f87202",
+      "comment": "",
+      "command": "click",
+      "target": "id=libro",
+      "targets": [
+        ["id=libro", "id"],
+        ["name=idLibro", "name"],
+        ["css=#libro", "css:finder"],
+        ["xpath=//select[@id='libro']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f35a51a7-9442-4641-892f-e2d94081917f",
+      "comment": "",
+      "command": "select",
+      "target": "id=libro",
+      "targets": [],
+      "value": "label=ASSASSINIO SULL'ORIENT EXPRESS"
+    }, {
+      "id": "d8ed02f7-30bd-4180-a2d7-205cff8310d1",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(10)",
+      "targets": [
+        ["css=option:nth-child(10)", "css:finder"],
+        ["xpath=//option[@value='9']", "xpath:attributes"],
+        ["xpath=//select[@id='libro']/option[10]", "xpath:idRelative"],
+        ["xpath=//option[10]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "954499f7-de7d-4653-ac24-ad7a6a7fcdcf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Crea Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "075024f2-7e7b-411b-876f-b19bea577c55",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "b1d1899b-8c0e-48c0-9a03-714f290f84ee",
+    "name": "TC_4.1_3",
+    "commands": [{
+      "id": "47706de2-3340-4c97-a532-2649b32b158e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "005c73a8-c114-4434-be4e-a5c4026374b3",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "875175fc-a0de-4bd5-98c3-8aa85d1e4eab",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "03a5267c-cb4e-4744-a3ad-e18b3070f042",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9acb7b72-0f72-4d03-a207-5e914b58a025",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Crea Recensione",
+      "targets": [
+        ["linkText=Crea Recensione", "linkText"],
+        ["css=th > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Crea Recensione')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/inizializzaCreaR')]", "xpath:href"],
+        ["xpath=//th/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Crea Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7fbac440-7eb3-4812-bd8a-ed20bad033d9",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7888e512-541b-4690-9f7a-245fc5dcf8e1",
+      "comment": "",
+      "command": "type",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "titolo giusto"
+    }, {
+      "id": "8a1f939d-617b-4227-9c1e-b8b6473c1fe1",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "35db4944-2ba0-4081-bfe1-0ac4b5a82c53",
+      "comment": "",
+      "command": "click",
+      "target": "css=.pagina",
+      "targets": [
+        ["css=.pagina", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "762f4a68-81a9-41af-b4d0-a86696ca5557",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "81ff46b3-350a-4a7f-a4cf-c0819ae96218",
+      "comment": "",
+      "command": "type",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowli storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia"
+    }, {
+      "id": "fccd7366-c4fd-41d6-8882-85c15deb5f8a",
+      "comment": "",
+      "command": "click",
+      "target": "id=libro",
+      "targets": [
+        ["id=libro", "id"],
+        ["name=idLibro", "name"],
+        ["css=#libro", "css:finder"],
+        ["xpath=//select[@id='libro']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2a66e189-968a-42b5-b919-123eb2a28d22",
+      "comment": "",
+      "command": "select",
+      "target": "id=libro",
+      "targets": [],
+      "value": "label=ASSASSINIO SULL'ORIENT EXPRESS"
+    }, {
+      "id": "c9c68dbe-2826-4e3d-ac2b-18cd24fcab27",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(10)",
+      "targets": [
+        ["css=option:nth-child(10)", "css:finder"],
+        ["xpath=//option[@value='9']", "xpath:attributes"],
+        ["xpath=//select[@id='libro']/option[10]", "xpath:idRelative"],
+        ["xpath=//option[10]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9a3781d-9d43-4407-a6fb-a0a8c72c6460",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Crea Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "61e75e57-f646-4192-8ac3-56ded673f18d",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "004c5858-4c79-4365-9a35-dddabcf8e63d",
+    "name": "TC_4.1_2",
+    "commands": [{
+      "id": "2ebb4633-b770-477b-b3be-edc022378fcb",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9018be01-0bb4-4211-9440-55738bdeda0a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dd086c00-c580-4aa9-8516-196b3100d0f3",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "23418738-7533-4b1e-bc0e-bb54f5f6bd6e",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3f56efc-7da8-49f3-b9f5-ebe935826026",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Crea Recensione",
+      "targets": [
+        ["linkText=Crea Recensione", "linkText"],
+        ["css=th > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Crea Recensione')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/inizializzaCreaR')]", "xpath:href"],
+        ["xpath=//th/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Crea Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d5ae4a32-a2c0-41f0-a80f-c4c311f9ec9b",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d719a3c4-179f-4199-8672-17c29c9dcc23",
+      "comment": "",
+      "command": "type",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "titolo giusto"
+    }, {
+      "id": "4de9aab8-2b23-4e04-9138-6f8045f2fc6d",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "db910919-7b51-4e4d-b659-ba5dea6a7856",
+      "comment": "",
+      "command": "type",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowling, è una delle serie più iconiche e amate della letteratura moderna. Ambientata in un mondo magico parallelo al nostro, la storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia, Harry si immerge in un mondo incantato fatto di pozioni, incantesimi, creature magiche e misteri.\\n\\nLa trama si sviluppa attraverso sette volumi, ognuno corrispondente a un anno scolastico di Harry. Mentre il protagonista stringe amicizie profonde con Hermione Granger e Ron Weasley, deve affrontare sfide sempre più pericolose, culminanti nello scontro con il malvagio Lord Voldemort, il mago oscuro che ha ucciso i suoi genitori e cerca di conquistare il mondo magico."
+    }, {
+      "id": "5ab178db-48d9-450b-803d-4ea6889e11a4",
+      "comment": "",
+      "command": "click",
+      "target": "id=libro",
+      "targets": [
+        ["id=libro", "id"],
+        ["name=idLibro", "name"],
+        ["css=#libro", "css:finder"],
+        ["xpath=//select[@id='libro']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e3cc447-9c6f-474c-9cb4-f13511ef67cc",
+      "comment": "",
+      "command": "select",
+      "target": "id=libro",
+      "targets": [],
+      "value": "label=ASSASSINIO SULL'ORIENT EXPRESS"
+    }, {
+      "id": "dcc09942-9f4a-42d4-a6d6-6b57501aa028",
+      "comment": "",
+      "command": "click",
+      "target": "css=option:nth-child(10)",
+      "targets": [
+        ["css=option:nth-child(10)", "css:finder"],
+        ["xpath=//option[@value='9']", "xpath:attributes"],
+        ["xpath=//select[@id='libro']/option[10]", "xpath:idRelative"],
+        ["xpath=//option[10]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e229ce2-565a-443a-a3bb-9adb94006bcb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Crea Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "41d6c764-ec2a-4855-a563-bb21ebb12bf2",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "deaf9549-82f5-417c-9371-5a27f61d4325",
+    "name": "TC_4.2_1",
+    "commands": [{
+      "id": "78146360-6c0b-4279-a4be-340fd6d4c00e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c0c6ec7a-9e40-4fd9-bf8c-210041a09264",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ac2595be-c2c5-4318-93c1-db5de9670482",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7405c38f-6c40-49da-98c8-4d291f88a8d4",
+      "comment": "",
+      "command": "click",
+      "target": "id=chatbot-close",
+      "targets": [
+        ["id=chatbot-close", "id"],
+        ["css=#chatbot-close", "css:finder"],
+        ["xpath=//span[@id='chatbot-close']", "xpath:attributes"],
+        ["xpath=//button[@id='chatbot-toggler']/span[2]", "xpath:idRelative"],
+        ["xpath=//span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a74afcc2-8928-4750-b4df-d4fd28f85e32",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8d7940c2-94ea-4d0f-9c5f-da73da9c5446",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(8) > td:nth-child(8) > .btn",
+      "targets": [
+        ["css=tr:nth-child(8) > td:nth-child(8) > .btn", "css:finder"],
+        ["xpath=(//button[@type='submit'])[15]", "xpath:attributes"],
+        ["xpath=//tr[8]/td[8]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fdde2174-6f80-4434-8229-b6788c652237",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "65d939f3-f1db-4934-848b-6e827b1cd61f",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e6ec6809-8517-40de-a000-0b1236ff8db4",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "30d4a1f8-0582-4676-8ce8-b6ca8fe9a54e",
+      "comment": "",
+      "command": "type",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowling, è una delle serie più iconiche e amate della letteratura moderna. Ambientata in un mondo magico parallelo al nostro, la storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia, Harry si immerge in un mondo incantato fatto di pozioni, incantesimi, creature magiche e misteri.\\n\\nLa trama si sviluppa attraverso sette volumi, ognuno corrispondente a un anno scolastico di Harry. Mentre il protagonista stringe amicizie profonde con Hermione Granger e Ron Weasley, deve affrontare sfide sempre più pericolose, culminanti nello scontro con il malvagio Lord Voldemort, il mago oscuro che ha ucciso i suoi genitori e cerca di conquistare il mondo magico."
+    }, {
+      "id": "4291f4d1-a780-4040-a571-ca1d34a8308b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(2)",
+      "targets": [
+        ["css=.form-group:nth-child(2)", "css:finder"],
+        ["xpath=//form/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f772db82-f8c1-45c4-be88-616301689a67",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eaaa653a-b472-4a56-946e-cfcbe7022e36",
+      "comment": "",
+      "command": "type",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "sadsa"
+    }, {
+      "id": "682abcaa-191f-44fa-ba6b-a3ec1a7ac181",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f3ac78e1-4ade-4bd0-a214-a1ffac42bc7a",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "79a444c9-ea6e-48c4-8d40-ba2940f9f91a",
+    "name": "TC_4.2_2",
+    "commands": [{
+      "id": "5217d83e-6689-443b-a6f5-757fdb7b7697",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e71202d2-c508-4389-8829-8f6e8c592a23",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "27d39811-3568-4563-9f98-425ae6fe808f",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "94bba711-0576-4c0d-8f79-f709f908ed4a",
+      "comment": "",
+      "command": "click",
+      "target": "id=chatbot-close",
+      "targets": [
+        ["id=chatbot-close", "id"],
+        ["css=#chatbot-close", "css:finder"],
+        ["xpath=//span[@id='chatbot-close']", "xpath:attributes"],
+        ["xpath=//button[@id='chatbot-toggler']/span[2]", "xpath:idRelative"],
+        ["xpath=//span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "20b56ab2-ccb1-47b7-8803-65ab6fd7fd67",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "00cd5bdf-c71c-43ba-8aa3-18e9f2cb4c2f",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(8) > td:nth-child(8) > .btn",
+      "targets": [
+        ["css=tr:nth-child(8) > td:nth-child(8) > .btn", "css:finder"],
+        ["xpath=(//button[@type='submit'])[15]", "xpath:attributes"],
+        ["xpath=//tr[8]/td[8]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2eec19e4-7280-48a3-a413-602eb767ced8",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f2ecdf8f-86d2-4c75-a801-174d266952df",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6ea84b43-0e76-45fb-ba3c-74f741498414",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d838b1ba-589d-4bce-977e-419dc2f47076",
+      "comment": "",
+      "command": "type",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "titologiusto"
+    }, {
+      "id": "8407803d-8c7d-453b-b041-187e22d1a199",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(2)",
+      "targets": [
+        ["css=.form-group:nth-child(2)", "css:finder"],
+        ["xpath=//form/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6caab590-c3ca-48b2-b06a-f46fa66fd232",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c9e14429-aa3b-45e5-bc4b-2c969460afa7",
+      "comment": "",
+      "command": "type",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowling, è una delle serie più iconiche e amate della letteratura moderna. Ambientata in un mondo magico parallelo al nostro, la storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia, Harry si immerge in un mondo incantato fatto di pozioni, incantesimi, creature magiche e misteri.\\n\\nLa trama si sviluppa attraverso sette volumi, ognuno corrispondente a un anno scolastico di Harry. Mentre il protagonista stringe amicizie profonde con Hermione Granger e Ron Weasley, deve affrontare sfide sempre più pericolose, culminanti nello scontro con il malvagio Lord Voldemort, il mago oscuro che ha ucciso i suoi genitori e cerca di conquistare il mondo magico."
+    }, {
+      "id": "607ae17d-2886-439e-b5f9-04f03050b31f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3d6595f6-fc17-4886-a1ab-3d005c03ee6e",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "b15fbfc9-7783-4b8d-8f6f-4abfdbfa1825",
+    "name": "TC_4.2_3",
+    "commands": [{
+      "id": "b6f8c967-5d87-4655-a540-e435d5cac016",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "21045852-9793-4343-9f3e-d6f91d3d284e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d033e9cc-40c7-4ecc-8112-b111ff0dffda",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7f6004ad-fae5-4051-b035-2138bb1b6b32",
+      "comment": "",
+      "command": "click",
+      "target": "id=chatbot-close",
+      "targets": [
+        ["id=chatbot-close", "id"],
+        ["css=#chatbot-close", "css:finder"],
+        ["xpath=//span[@id='chatbot-close']", "xpath:attributes"],
+        ["xpath=//button[@id='chatbot-toggler']/span[2]", "xpath:idRelative"],
+        ["xpath=//span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "23f86230-18f7-4e96-9aa5-c3b2662354a7",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fd27d2f1-e30f-44e9-be99-0a8d27fceb1e",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(8) > td:nth-child(8) > .btn",
+      "targets": [
+        ["css=tr:nth-child(8) > td:nth-child(8) > .btn", "css:finder"],
+        ["xpath=(//button[@type='submit'])[15]", "xpath:attributes"],
+        ["xpath=//tr[8]/td[8]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cab5e023-c71f-466b-86c5-774fdb813a01",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4dd27064-5b73-457f-9439-deb37124e599",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "87c76858-9f17-4ade-96d6-d139e054cef8",
+      "comment": "",
+      "command": "click",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a9ee39a4-3cdc-4901-843e-382601a14c02",
+      "comment": "",
+      "command": "type",
+      "target": "id=titolo",
+      "targets": [
+        ["id=titolo", "id"],
+        ["name=titolo", "name"],
+        ["css=#titolo", "css:finder"],
+        ["xpath=//input[@id='titolo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "titologiusto"
+    }, {
+      "id": "c5754c5a-6318-4051-a945-d6a9d3ff4609",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(2)",
+      "targets": [
+        ["css=.form-group:nth-child(2)", "css:finder"],
+        ["xpath=//form/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bf50d183-c9fd-425d-8ec5-d522c73b1282",
+      "comment": "",
+      "command": "click",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f446d757-9adc-4f89-9ba4-2b88db62b5c8",
+      "comment": "",
+      "command": "type",
+      "target": "id=descrizione",
+      "targets": [
+        ["id=descrizione", "id"],
+        ["name=descrizione", "name"],
+        ["css=#descrizione", "css:finder"],
+        ["xpath=//textarea[@id='descrizione']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "testoGiusto\\n"
+    }, {
+      "id": "754e6d84-c325-447f-a29b-cd4c465714cd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica Recensione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b855e6a-72b0-4749-a6a9-2139b14e44fc",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "fcc1825c-0261-4835-b081-77313c61aa43",
+    "name": "TC_4.3_1",
+    "commands": [{
+      "id": "30aa2dbb-488b-4416-8527-6becb4eefa90",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "daf2e861-7be2-4b2e-beff-7c7fc012626b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a50bbe55-46a6-4927-8047-39e2feacb820",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "379c8055-e17d-4c7e-ad18-276df6d8448f",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b4f2d9b8-90d8-4e98-b8dd-51a63efb60b0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Visualizza",
+      "targets": [
+        ["linkText=Visualizza", "linkText"],
+        ["css=tr:nth-child(1) > td:nth-child(7) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Visualizza')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/1/visualizzaRecensione')]", "xpath:href"],
+        ["xpath=//td[7]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Visualizza')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3fb595a8-ea8e-4133-8b2f-aee040833773",
+      "comment": "",
+      "command": "click",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "882f2e7a-526e-4030-8561-35654519a78d",
+      "comment": "",
+      "command": "click",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a7dadbe0-bbee-4fe9-b6ad-bcd50343b23c",
+      "comment": "",
+      "command": "type",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowling, è una delle serie più iconiche e amate della letteratura moderna. Ambientata in un mondo magico parallelo al nostro, la storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia, Harry si immerge in un mondo incantato fatto di pozioni, incantesimi, creature magiche e misteri.\\n\\nLa trama si sviluppa attraverso sette volumi, ognuno corrispondente a un anno scolastico di Harry. Mentre il protagonista stringe amicizie profonde con Hermione Granger e Ron Weasley, deve affrontare sfide sempre più pericolose, culminanti nello scontro con il malvagio Lord Voldemort, il mago oscuro che ha ucciso i suoi genitori e cerca di conquistare il mondo magico."
+    }, {
+      "id": "c9bed602-c126-4422-8a42-370e7e421796",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger:nth-child(4)",
+      "targets": [
+        ["css=.btn-danger:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[6]", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Aggiungi Commento')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e81e521a-c325-45f4-a547-72dabe0c84d0",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "9b8d8c6d-3960-40c1-9c44-d6de7d9d1880",
+    "name": "TC_4.3_2",
+    "commands": [{
+      "id": "ae8d1b8b-c37b-42ab-8bca-e05d1b16904b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "925b304d-2489-428c-a59c-8b75908cf9ce",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e48921d6-4bf8-4275-8d97-483403f9b539",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f5cd7e36-62a8-4f38-832c-42cb55da050d",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2ac81323-eca5-49d4-ba1b-5b4c85b9718b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Visualizza",
+      "targets": [
+        ["linkText=Visualizza", "linkText"],
+        ["css=tr:nth-child(1) > td:nth-child(7) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Visualizza')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/1/visualizzaRecensione')]", "xpath:href"],
+        ["xpath=//td[7]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Visualizza')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "22ca3d1a-5ad1-49a4-bae0-50ce4fea23f0",
+      "comment": "",
+      "command": "click",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2ad37580-8aed-4671-8d21-b73c8bcf4618",
+      "comment": "",
+      "command": "click",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "93d21677-249f-48ef-84aa-21897cfc826d",
+      "comment": "",
+      "command": "type",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": "descrizioneGiusta"
+    }, {
+      "id": "158ae6d3-7756-45f6-8878-0bf10b772de8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger:nth-child(4)",
+      "targets": [
+        ["css=.btn-danger:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[6]", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Aggiungi Commento')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d0e0c627-12c1-4f1e-8809-ebedde13c5b1",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "5f7a4bc9-6d8d-47d5-a770-8222694e19b8",
+    "name": "TC_4.4_2",
+    "commands": [{
+      "id": "b30f6d99-4fef-4ed7-bea0-0e4f6c648d1e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f64e57b8-9c7c-49b4-a1f0-408dfc3636ae",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6dd6620c-f717-4c63-8f3e-29d1bcb121dc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cf5b2f46-9970-4356-b736-b85457b9cff3",
+      "comment": "",
+      "command": "click",
+      "target": "id=chatbot-close",
+      "targets": [
+        ["id=chatbot-close", "id"],
+        ["css=#chatbot-close", "css:finder"],
+        ["xpath=//span[@id='chatbot-close']", "xpath:attributes"],
+        ["xpath=//button[@id='chatbot-toggler']/span[2]", "xpath:idRelative"],
+        ["xpath=//span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'close')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ea39996-8203-409d-88df-b7fbe7e5489f",
+      "comment": "",
+      "command": "click",
+      "target": "id=header-close",
+      "targets": [
+        ["id=header-close", "id"],
+        ["css=#header-close", "css:finder"],
+        ["xpath=//span[@id='header-close']", "xpath:attributes"],
+        ["xpath=//header/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c280fa72-973c-41ca-9616-917f6602304d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Visualizza",
+      "targets": [
+        ["linkText=Visualizza", "linkText"],
+        ["css=tr:nth-child(1) > td:nth-child(7) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Visualizza')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/1/visualizzaRecensione')]", "xpath:href"],
+        ["xpath=//td[7]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Visualizza')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "273deaa1-4875-457d-9b4c-2e417d2372f8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.comment-item:nth-child(2) > .comment > .btn",
+      "targets": [
+        ["css=.comment-item:nth-child(2) > .comment > .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='commenti']/ul/li[2]/div/button", "xpath:idRelative"],
+        ["xpath=//li[2]/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "28b7bdd9-5630-4079-865b-b9a059bf06b0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.comment-item:nth-child(2) > .comment",
+      "targets": [
+        ["css=.comment-item:nth-child(2) > .comment", "css:finder"],
+        ["xpath=//div[@id='commenti']/ul/li[2]/div", "xpath:idRelative"],
+        ["xpath=//div/div/ul/li[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "404e4e16-2c7b-42a4-ba54-cab8024581bc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.comment-item:nth-child(2) > .comment",
+      "targets": [
+        ["css=.comment-item:nth-child(2) > .comment", "css:finder"],
+        ["xpath=//div[@id='commenti']/ul/li[2]/div", "xpath:idRelative"],
+        ["xpath=//div/div/ul/li[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7898e152-e1f1-4f5e-aaef-10dcbb2f3696",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=.comment-item:nth-child(2) > .comment",
+      "targets": [
+        ["css=.comment-item:nth-child(2) > .comment", "css:finder"],
+        ["xpath=//div[@id='commenti']/ul/li[2]/div", "xpath:idRelative"],
+        ["xpath=//div/div/ul/li[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a9299319-dfe2-42ad-bd4b-16a370056d0c",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form-risposta-4 #description-risposta",
+      "targets": [
+        ["css=#form-risposta-4 #description-risposta", "css:finder"],
+        ["xpath=(//textarea[@id='description-risposta'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='form-risposta-4']/form/textarea", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eead9429-bc9b-40e6-ae9e-9bee7e268db9",
+      "comment": "",
+      "command": "type",
+      "target": "css=#form-risposta-4 #description-risposta",
+      "targets": [
+        ["css=#form-risposta-4 #description-risposta", "css:finder"],
+        ["xpath=(//textarea[@id='description-risposta'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='form-risposta-4']/form/textarea", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": "sipropriobellissima!"
+    }, {
+      "id": "b29def0b-bb25-4ab7-a4ae-72054c6aea5d",
+      "comment": "",
+      "command": "click",
+      "target": "css=#form-risposta-4 .btn",
+      "targets": [
+        ["css=#form-risposta-4 .btn", "css:finder"],
+        ["xpath=(//button[@type='submit'])[7]", "xpath:attributes"],
+        ["xpath=//div[@id='form-risposta-4']/form/button", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div[2]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b83e5c3-b4ea-4ed4-a827-684ca9177571",
+      "comment": "",
+      "command": "click",
+      "target": "css=.comment-item:nth-child(2) .comment-description",
+      "targets": [
+        ["css=.comment-item:nth-child(2) .comment-description", "css:finder"],
+        ["xpath=//div[@id='commenti']/ul/li[2]/div/p", "xpath:idRelative"],
+        ["xpath=//li[2]/div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'descrizioneGiusta')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "bdffb194-4f61-4960-9130-b29b2303359b",
+    "name": "TC_4.4_1",
+    "commands": [{
+      "id": "1f3bbd97-8dbe-4542-9bbe-c2be9848d423",
+      "comment": "",
+      "command": "open",
+      "target": "/blog/1/gestisciRisposta",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dbea1c3f-3d8e-412c-8329-ff8f70075377",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1218x699",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c6753175-04e1-4872-8288-eca0a7895390",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "640c659e-47ac-4044-9f72-4ab0b74abee9",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Blog",
+      "targets": [
+        ["linkText=Blog", "linkText"],
+        ["css=.col:nth-child(2) .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Blog')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog')]", "xpath:href"],
+        ["xpath=//div[2]/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blog')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "30df95e5-7959-4308-9336-7d2f2e63083f",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Visualizza",
+      "targets": [
+        ["linkText=Visualizza", "linkText"],
+        ["css=tr:nth-child(1) > td:nth-child(7) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Visualizza')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/blog/1/visualizzaRecensione')]", "xpath:href"],
+        ["xpath=//td[7]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Visualizza')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7b352ca8-3e36-429b-94ef-df5d2cf6fb80",
+      "comment": "",
+      "command": "click",
+      "target": "css=form:nth-child(2)",
+      "targets": [
+        ["css=form:nth-child(2)", "css:finder"],
+        ["xpath=//form[@action='/blog/1/gestisciCommento']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b7d07a60-1910-4a38-ac5c-909cd3973dea",
+      "comment": "",
+      "command": "click",
+      "target": "css=form:nth-child(2)",
+      "targets": [
+        ["css=form:nth-child(2)", "css:finder"],
+        ["xpath=//form[@action='/blog/1/gestisciCommento']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "562ec410-ae97-4961-b01a-b43794944912",
+      "comment": "",
+      "command": "click",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "354c290f-02c1-498d-937e-5d66e2f1fabb",
+      "comment": "",
+      "command": "type",
+      "target": "id=description4",
+      "targets": [
+        ["id=description4", "id"],
+        ["css=#description4", "css:finder"],
+        ["xpath=//textarea[@id='description4']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/textarea", "xpath:position"]
+      ],
+      "value": "La saga di Harry Potter, scritta da J.K. Rowling, è una delle serie più iconiche e amate della letteratura moderna. Ambientata in un mondo magico parallelo al nostro, la storia segue le avventure di Harry Potter, un orfano che scopre di essere un mago al compimento del suo undicesimo compleanno. Accolto a Hogwarts, una scuola di magia, Harry si immerge in un mondo incantato fatto di pozioni, incantesimi, creature magiche e misteri.\\n\\nLa trama si sviluppa attraverso sette volumi, ognuno corrispondente a un anno scolastico di Harry. Mentre il protagonista stringe amicizie profonde con Hermione Granger e Ron Weasley, deve affrontare sfide sempre più pericolose, culminanti nello scontro con il malvagio Lord Voldemort, il mago oscuro che ha ucciso i suoi genitori e cerca di conquistare il mondo magico."
+    }, {
+      "id": "5405a9e2-f1f0-489a-8288-d16066ee3cec",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger:nth-child(4)",
+      "targets": [
+        ["css=.btn-danger:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[10]", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Aggiungi Commento')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6dd9c28f-029e-4035-b153-c6a151b93ae6",
+      "comment": "",
+      "command": "click",
+      "target": "css=img",
+      "targets": [
+        ["css=img", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "34595e42-7711-4d4c-b77f-51b2b6aa1dc4",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:8080/"],
+  "plugins": []
+}

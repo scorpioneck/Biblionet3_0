@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: it.unisa.biblionet.autenticazione.controller.AutenticazioneControllerIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 71.855 s - in it.unisa.biblionet.autenticazione.controller.AutenticazioneControllerIntegrationTest

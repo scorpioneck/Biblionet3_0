@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: it.unisa.biblionet.prenotazioneLibri.controller.BibliotecaControllerTest
+-------------------------------------------------------------------------------
+Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.083 s - in it.unisa.biblionet.prenotazioneLibri.controller.BibliotecaControllerTest

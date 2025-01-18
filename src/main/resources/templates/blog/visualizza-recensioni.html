@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>BLOG BIBLIONET</title>
+</head>
+<body>
+<div layout:fragment="contenuto-pagina" class="container">
+<h1>Recensioni del blog:</h1>
+    <div class="col-10">
+<table class="table sortable">
+    <thead>
+    <tr>
+        <th  scope="col" class="align-content-center" >Copertina</th>
+        <th  scope="col" class="align-content-center" >Titolo</th>
+        <th  scope="col" class="align-content-center">Descrizione</th>
+        <th scope="col" class="align-content-center" >Esperto</th>
+        <th  scope="col" class="align-content-center">Libro</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Mostra un messaggio se la lista è vuota -->
+    <tr th:if="${#lists.isEmpty(recensioni)}">
+        <td th:text="${messaggio}"></td>
+    </tr>
+
+    <tr th:each="recensione : ${recensioni}">
+        <td><img th:src="'data:image/png;base64,' + ${recensione.libro.immagineLibro}" alt="Immagine Libro">
+        <td th:text="${recensione.titolo}">Titolo</td>
+        <td th:text="${recensione.descrizione}">Descrizione</td>
+        <td th:text="${recensione.esperto.nome}">Esperto</td>
+        <td th:text="${recensione.libro.titolo}">libro</td>
+        <td th:text="${recensione.esperto.nome}">Esperto</td>
+        <td><a class="btn btn-danger" th:href="@{'/blog/' +${recensione.getId()} + '/visualizzaRecensione'}"> Visualizza </a></td>
+
+        <div th:if="${session.loggedUser != null && session.loggedUser.tipo == 'Esperto'}">
+        <form th:action="@{'/blog/' + ${recensione.getId()} + '/inizializzaModificaR'}" method="get">
+            <td> <button type="submit" class="btn btn-danger">Modifica</button> </td>
+        </form>
+        </div>
+
+        <div th:if="${session.loggedUser != null && session.loggedUser.tipo == 'Esperto'}">
+        <form th:action="@{'/blog/' + ${recensione.getId()} + '/cancellaRecensione'}" method="post">
+            <td> <button type="submit" class="btn btn-danger">Elimina</button> </td>
+       </form>
+        </div>
+
+    </tr>
+    </tbody>
+    <tfoot th:if="${session.loggedUser != null && session.loggedUser.tipo == 'Esperto'}">
+    <th th:colspan="7" style="text-align: center;">
+        <a style="width: 100%; height: 100%;" class="btn btn-main" th:href="@{/blog/inizializzaCreaR}">
+            Crea Recensione
+        </a>
+    </th>
+    </tfoot>
+</table>
+    </div>
+</div>
+</body>
+</html>

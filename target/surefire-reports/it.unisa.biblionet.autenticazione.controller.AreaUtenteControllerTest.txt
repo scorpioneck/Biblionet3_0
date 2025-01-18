@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: it.unisa.biblionet.autenticazione.controller.AreaUtenteControllerTest
+-------------------------------------------------------------------------------
+Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.183 s - in it.unisa.biblionet.autenticazione.controller.AreaUtenteControllerTest

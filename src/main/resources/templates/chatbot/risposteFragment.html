@@ -1,0 +1,23 @@
+<!-- src/main/resources/templates/chatbot/risposteFragment.html -->
+<ul th:fragment="risposteList" class="chatbox">
+    <li class="chat incoming" th:each="risposta : ${risposte}">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <div>
+            <p>
+                <span>
+                    <button class="risposta-button" th:data-idRisposta="${risposta.idRisposta}" th:text="${risposta.contenuto}"></button>
+                </span>
+            </p>
+        </div>
+    </li>
+    <!-- Bottone per assistenza -->
+    <li class="chat incoming">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <div>
+            <p>
+                <a href="mailto:assistenza@biblionet.it" class="assistenza-button">Contatta Assistenza</a>
+            </p>
+        </div>
+    </li>
+
+</ul>

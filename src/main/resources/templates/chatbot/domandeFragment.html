@@ -1,0 +1,16 @@
+<!-- src/main/resources/templates/chatbot/domandeFragment.html -->
+<ul th:fragment="domandeList" class="chatbox">
+    <li class="chat incoming">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <div>
+            <p>
+                <!-- Itera sui bottoni all'interno di un unico <p> -->
+                <span th:each="domanda : ${domande}">
+                    <button class="domanda-button" th:data-id="${domanda.idDomanda}" th:text="${domanda.contenuto}"
+                            th:data-link="${domanda.mapLink}" ></button>
+                </span>
+            </p>
+        </div>
+    </li>
+
+</ul>

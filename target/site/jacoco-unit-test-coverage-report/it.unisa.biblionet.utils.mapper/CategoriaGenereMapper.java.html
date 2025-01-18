@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CategoriaGenereMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">biblionet</a> &gt; <a href="index.source.html" class="el_package">it.unisa.biblionet.utils.mapper</a> &gt; <span class="el_source">CategoriaGenereMapper.java</span></div><h1>CategoriaGenereMapper.java</h1><pre class="source lang-java linenums">package it.unisa.biblionet.utils.mapper;
+
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class CategoriaGenereMapper {
+
+    private final Map&lt;String, String&gt; rispostaGenereMap;
+
+<span class="fc" id="L13">    public CategoriaGenereMapper() {</span>
+<span class="fc" id="L14">        rispostaGenereMap = new HashMap&lt;&gt;();</span>
+
+        // Associazione risposta → genere
+<span class="fc" id="L17">        rispostaGenereMap.put(&quot;Viaggi in terre misteriose e lontane&quot;, &quot;D'Avventura&quot;);</span>
+<span class="fc" id="L18">        rispostaGenereMap.put(&quot;Esplorazione dello spazio e mondi futuristici&quot;, &quot;Fantascienza&quot;);</span>
+<span class="fc" id="L19">        rispostaGenereMap.put(&quot;Indagini e misteri da risolvere&quot;, &quot;Giallo&quot;);</span>
+<span class="fc" id="L20">        rispostaGenereMap.put(&quot;Un’immersione nei sentimenti e nei legami umani&quot;, &quot;Romantico&quot;);</span>
+<span class="fc" id="L21">        rispostaGenereMap.put(&quot;Conflitti intensi e azione adrenalinica&quot;, &quot;Azione&quot;);</span>
+
+<span class="fc" id="L23">        rispostaGenereMap.put(&quot;Suspense e brividi&quot;, &quot;Thriller&quot;);</span>
+<span class="fc" id="L24">        rispostaGenereMap.put(&quot;Stupore e meraviglia per mondi immaginari&quot;, &quot;Fantasy&quot;);</span>
+<span class="fc" id="L25">        rispostaGenereMap.put(&quot;Divertimento e leggerezza&quot;, &quot;Comico&quot;);</span>
+<span class="fc" id="L26">        rispostaGenereMap.put(&quot;Riflessione e ispirazione su temi profondi&quot;, &quot;Narrativa&quot;);</span>
+<span class="fc" id="L27">        rispostaGenereMap.put(&quot;Nostalgia e romanticismo&quot;, &quot;Romantico&quot;);</span>
+
+<span class="fc" id="L29">        rispostaGenereMap.put(&quot;Un’epoca passata, ricca di eventi storici&quot;, &quot;Storico&quot;);</span>
+<span class="fc" id="L30">        rispostaGenereMap.put(&quot;Un mondo distopico o tecnologico&quot;, &quot;Distopia&quot;);</span>
+<span class="fc" id="L31">        rispostaGenereMap.put(&quot;Una tranquilla cittadina con misteri da risolvere&quot;, &quot;Giallo&quot;);</span>
+<span class="fc" id="L32">        rispostaGenereMap.put(&quot;Un’avventura magica o fiabesca&quot;, &quot;Fiabe e favole&quot;);</span>
+<span class="fc" id="L33">        rispostaGenereMap.put(&quot;Una rappresentazione realistica della vita moderna&quot;, &quot;Narrativa&quot;);</span>
+
+<span class="fc" id="L35">        rispostaGenereMap.put(&quot;Lotte di potere e conflitti sociali&quot;, &quot;Politico&quot;);</span>
+<span class="fc" id="L36">        rispostaGenereMap.put(&quot;Scoperte scientifiche e innovazione tecnologica&quot;, &quot;Scientifico&quot;);</span>
+<span class="fc" id="L37">        rispostaGenereMap.put(&quot;Emozioni forti e storie d’amore&quot;, &quot;Romantico&quot;);</span>
+<span class="fc" id="L38">        rispostaGenereMap.put(&quot;Commedia e situazioni divertenti&quot;, &quot;Comico&quot;);</span>
+<span class="fc" id="L39">        rispostaGenereMap.put(&quot;Racconti surreali e fantastici&quot;, &quot;Fantasy&quot;);</span>
+
+<span class="fc" id="L41">        rispostaGenereMap.put(&quot;Un detective o un investigatore&quot;, &quot;Giallo&quot;);</span>
+<span class="fc" id="L42">        rispostaGenereMap.put(&quot;Un eroe che combatte contro il male&quot;, &quot;D'Avventura&quot;);</span>
+<span class="fc" id="L43">        rispostaGenereMap.put(&quot;Un visionario o scienziato che esplora nuovi orizzonti&quot;, &quot;Fantascienza&quot;);</span>
+<span class="fc" id="L44">        rispostaGenereMap.put(&quot;Una persona comune che affronta grandi sfide emotive&quot;, &quot;Narrativa&quot;);</span>
+<span class="fc" id="L45">        rispostaGenereMap.put(&quot;Un protagonista divertente e spensierato&quot;, &quot;Comico&quot;);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Ottiene il genere associato a una risposta.
+     * @param contenutoRisposta Il contenuto della risposta.
+     * @return Il genere corrispondente.
+     */
+    public String getGenereByRisposta(String contenutoRisposta) {
+<span class="nc" id="L54">        return rispostaGenereMap.getOrDefault(contenutoRisposta, null);</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

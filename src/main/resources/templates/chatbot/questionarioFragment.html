@@ -1,0 +1,19 @@
+<ul id="questionario-list" th:fragment="questionarioList" class="chatbox">
+    <li class="chat incoming">
+        <span class="material-symbols-outlined">smart_toy</span>
+        <div>
+            <!-- Testo della domanda -->
+            <p th:text="${domanda.contenuto}">Domanda...</p>
+            <div>
+                <!-- Bottoni delle risposte -->
+                <button class="risposta-button"
+                        th:each="risposta : ${domanda.risposte}"
+                        th:data-id="${risposta.idRisposta}"
+                        th:text="${risposta.contenuto}">
+                </button>
+            </div>
+            <!-- Pulsante per inviare la risposta -->
+            <button id="invia-risposta" disabled>Invia</button>
+        </div>
+    </li>
+</ul>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{~/style/home.css}"/>
+</head>
+<body>
+
+<div layout:fragment="contenuto-pagina">
+
+    <div class="container">
+        <div class="row" style="margin-top: 6%">
+
+            <div class="col flip_container">
+                <div class="flip">
+                    <div class="flip_front">
+                        <a>
+                            <img th:src="@{~/image/home/club-del-libro.jpg}" style="width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    <div class="flip_back w-100 flipped-card-text">
+                        <p>
+                            Premi sul bottone in basso per
+                            visualizzare i club del libro
+                            ed unirti a milioni di lettori che condividono
+                            i tuoi stessi interessi.
+                        </p>
+                        <a href="/club-del-libro" class="btn btn-lg active red-btn" role="button" aria-pressed="true">Club
+                            del Libro</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col flip_container">
+                <div class="flip">
+                    <div class="flip_front">
+                        <a>
+                            <img th:src="@{~/image/blog/blogLibro.jpg}" style="width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    <div class="flip_back w-100 flipped-card-text">
+                        <p>
+                            Premi sul bottone in basso per
+                            visualizzare il blog
+                        </p>
+                        <a href="/blog" class="btn btn-lg active red-btn" role="button" aria-pressed="true">Blog</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col flip_container">
+                <div class="flip">
+                    <div class="flip_front">
+                        <a>
+                            <img th:src="@{~/image/home/biblioteca.jpg}" style="width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    <div class="flip_back w-100 flipped-card-text">
+                        <p>
+                            Premi sul bottone in basso
+                            per visualizzare le biblioteche
+                            che più ti possono interessare.
+                        </p>
+                        <a href="/biblioteca/visualizza-biblioteche" class="btn btn-lg active red-btn" role="button"
+                           aria-pressed="true">Biblioteche</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col flip_container">
+                <div class="flip">
+                    <div class="flip_front">
+                        <a>
+                            <img th:src="@{~/image/home/esperto.jpg}" style="width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    <div class="flip_back w-100 flipped-card-text">
+                        <p>
+                            Premi sul bottone in basso
+                            per visualizzare gli esperti
+                            ed interagire con loro per farti consigliare i
+                            libri più adatti a te.
+                        </p>
+                        <a href="/comunicazione-esperto/lista-esperti" class="btn btn-lg active red-btn" role="button" aria-pressed="true">Esperti</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col flip_container">
+                <div class="flip">
+                    <div class="flip_front">
+                        <a>
+                            <img th:src="@{~/image/home/prenotazione-libri.jpg}" style="width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    <div class="flip_back w-100 flipped-card-text">
+                        <p>
+                            Premi sul bottone in basso
+                            per sfogliare il catalogo e
+                            prenotare i libri che desideri
+                            direttamente da casa tua.
+                        </p>
+                        <a href="/prenotazione-libri" class="btn btn-lg active red-btn" role="button"
+                           aria-pressed="true">Prenotazione libri</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="about">
+                <!-- Section: Team -->
+                <section class="team-section text-center my-5">
+                    <!-- Section description -->
+                    <p class="grey-text w-responsive mx-auto mb-5"> Biblionet nasce con l'obiettivo di facilitare
+                        l’avvicinamento di nuove persone al mondo della lettura.
+                        Attraverso la nostra piattaforma online, viene fornito al lettore la possibilità di
+                        cercare le biblioteche più vicine ad esso
+                        e di visionare in modo semplice e veloce la lista dei libri disponibili in esse.</p>
+                </section>
+
+
+            </div>
+        </div>
+    </div>
+    <footer class="bg-light text-center text-lg-start" style="margin-left:-5%; width: 107.656%; bottom:0">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            © 2025 Copyright:Biblionet.com
+        </div>
+        <!-- Copyright -->
+    </footer>
+</div>
+</body>
+</html>

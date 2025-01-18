@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/common}">
+
+    <head> <link rel="stylesheet" href="/style/chatbot.css">
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+        <meta name="viewport" content="width=device.width, initial-scale=1.0">
+        <script src="/js/chatbot/newLogicAjax.js" defer></script>
+    </head>
+
+    <body layout:fragment="pagina" class="pagina">
+<!-- Normalmente non dovrebbe esserci bisogno di riscrivere questo fragment. È qui 
+     per permettere la sostituzione del contenuto della navbar. -->
+    <div layout:insert="~{layout/includes/navbar :: navbar}"></div>
+    <div class="contenuto-pagina">
+        <div layout:fragment="contenuto-pagina">
+            <p>Contenuto della pagina</p>
+        </div>
+    </div>
+
+        <div th:if="${session.loggedUser != null && (session.loggedUser.tipo == 'Lettore'|| session.loggedUser.tipo == 'Esperto')}">
+        <div th:insert="~{chatbot/chatbotVisual :: chatbotFrangment}"> </div>
+
+        </div>
+
+</body>

@@ -1,0 +1,50 @@
+<!-- _recensione-form.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<form layout:fragment="recensione-form"
+      th:action="${action}"
+      th:object="${recensione}"
+      method="post">
+
+  <div class="form-group">
+    <label for="titolo">Titolo</label>
+    <input class="form-control" type="text" th:field="*{titolo}" id="titolo">
+  </div>
+
+  <div class="form-group">
+    <label for="descrizione">Descrizione</label>
+    <textarea class="form-control" th:field="*{descrizione}" id="descrizione"></textarea>
+  </div>
+
+  <tr th:if="${#lists.isEmpty(listaLibri)}">
+    <td th:text="${messaggio}"></td>
+  </tr>
+
+  <div th:if="${listaLibri == null or #lists.isEmpty(listaLibri)}">
+    <input type="hidden" id ="libro" name="idLibro" value="-1">
+    <p class="text-danger">Non ci sono libri disponibili per la modifica.</p>
+  </div>
+
+  <div th:if="${listaLibri != null and !#lists.isEmpty(listaLibri)}" class="form-group">
+    <label for="libro">Libro</label>
+    <select class="form-control" id="libro" name = "idLibro">
+      <option value="" disabled selected>Seleziona un libro</option>
+      <option th:each="libro : ${listaLibri}"
+              th:value="${libro.idLibro}"
+              th:text="${libro.titolo}">
+      </option>
+    </select>
+  </div>
+
+  <div th:if="${listaLibri != null and !#lists.isEmpty(listaLibri)}">
+  <button class="btn btn-primary" type="submit">Crea Recensione</button>
+  </div>
+
+  <div th:if="${listaLibri == null or #lists.isEmpty(listaLibri)}">
+    <button class="btn btn-primary" type="submit">Modifica Recensione</button>
+  </div>
+
+</form>
+
+</html>

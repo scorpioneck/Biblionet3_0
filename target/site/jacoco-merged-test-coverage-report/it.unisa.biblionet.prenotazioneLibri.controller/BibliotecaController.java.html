@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BibliotecaController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">biblionet</a> &gt; <a href="index.source.html" class="el_package">it.unisa.biblionet.prenotazioneLibri.controller</a> &gt; <span class="el_source">BibliotecaController.java</span></div><h1>BibliotecaController.java</h1><pre class="source lang-java linenums">package it.unisa.biblionet.prenotazioneLibri.controller;
+
+
+import it.unisa.biblionet.model.entity.Genere;
+import it.unisa.biblionet.model.entity.Libro;
+import it.unisa.biblionet.model.entity.utente.Biblioteca;
+import it.unisa.biblionet.model.entity.utente.UtenteRegistrato;
+import it.unisa.biblionet.model.form.LibroForm;
+import it.unisa.biblionet.prenotazioneLibri.service.PrenotazioneLibriService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+
+/**
+ * Implementa il controller per il sottosistema
+ * PrenotazioneLibri, in particolare la gestione
+ * delle Biblioteche.
+ */
+@SessionAttributes(&quot;loggedUser&quot;)
+@Controller
+@RequiredArgsConstructor
+@RequestMapping(&quot;/biblioteca&quot;)
+public class BibliotecaController {
+
+    /**
+     * Il service per effettuare le operazioni di
+     * persistenza.
+     */
+    private final PrenotazioneLibriService prenotazioneService;
+
+    /**
+     * Implementa la funzionalità che permette di
+     * visualizzare tutte le biblioteche iscritte.
+     * @param model Il model in cui salvare la lista
+     * @return La view per visualizzare le biblioteche
+     */
+    @RequestMapping(value = &quot;/visualizza-biblioteche&quot;,
+            method = RequestMethod.GET)
+    public String visualizzaListaBiblioteche(final Model model) {
+
+<span class="fc" id="L51">        model.addAttribute(&quot;listaBiblioteche&quot;,</span>
+<span class="fc" id="L52">                prenotazioneService.getAllBiblioteche());</span>
+
+<span class="fc" id="L54">        return &quot;/biblioteca/visualizza-lista-biblioteche&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette di
+     * visualizzare la pagina per l'inserimento di
+     * nuovi libri prenotabili.
+     * @param model Il model per recuperare l'utente
+     * @return La view
+     */
+    @RequestMapping(value = &quot;/inserisci-nuovo-libro&quot;,
+                            method = RequestMethod.GET)
+    public String visualizzaInserimentoLibro(final Model model) {
+
+<span class="fc" id="L68">        UtenteRegistrato utente =</span>
+<span class="fc" id="L69">                (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc bfc" id="L70" title="All 4 branches covered.">        if (utente == null || utente.getTipo() != &quot;Biblioteca&quot;) {</span>
+<span class="fc" id="L71">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+        }
+
+<span class="fc" id="L74">        List&lt;Libro&gt; listaLibri =</span>
+<span class="fc" id="L75">                prenotazioneService.visualizzaListaLibriCompleta();</span>
+<span class="fc" id="L76">        model.addAttribute(&quot;listaLibri&quot;, listaLibri);</span>
+
+<span class="fc" id="L78">        List&lt;Genere&gt; listaGeneri = prenotazioneService.getAllGeneri();</span>
+<span class="fc" id="L79">        model.addAttribute(&quot;listaGeneri&quot;, listaGeneri);</span>
+
+<span class="fc" id="L81">        return &quot;/biblioteca/inserimento-nuovo-libro-prenotabile&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette inserire
+     * un libro tramite l'isbn ed una Api di Google.
+     * @param isbn l'isbn del libro
+     * @param generi la lista dei generi del libro
+     * @param numCopie il numero di copie possedute
+     * @param model Il model per recuperare l'utente
+     * @return La view per visualizzare il libro
+     */
+    @RequestMapping(value = &quot;/inserimento-isbn&quot;,
+                        method = RequestMethod.POST)
+    public String inserisciPerIsbn(final Model model,
+                                   @RequestParam final String isbn,
+                                   @RequestParam final String[] generi,
+                                   @RequestParam final int numCopie) {
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (isbn == null) {</span>
+<span class="nc" id="L101">            return &quot;redirect:/biblioteca/inserisci-nuovo-libro&quot;;</span>
+        }
+<span class="fc" id="L103">        UtenteRegistrato utente =</span>
+<span class="fc" id="L104">                (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (utente == null || utente.getTipo() != &quot;Biblioteca&quot;) {</span>
+<span class="fc" id="L106">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+        }
+<span class="fc" id="L108">        Biblioteca b = (Biblioteca) utente;</span>
+<span class="fc" id="L109">        List&lt;String&gt; glist = Arrays.asList(generi.clone());</span>
+<span class="fc" id="L110">        Libro l = prenotazioneService.inserimentoPerIsbn(</span>
+<span class="fc" id="L111">                isbn, b.getEmail(), numCopie, glist);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (l == null) {</span>
+<span class="fc" id="L113">            return &quot;redirect:/biblioteca/inserisci-nuovo-libro&quot;;</span>
+        }
+<span class="fc" id="L115">        return &quot;redirect:/prenotazione-libri/&quot; + l.getIdLibro()</span>
+                + &quot;/visualizza-libro&quot;;
+    }
+
+    /**
+     * Implementa la funzionalità che permette inserire
+     * un libro alla lista dei possessi preso
+     * dal db.
+     * @param idLibro l'ID del libro
+     * @param numCopie il numero di copie possedute
+     * @param model Il model per recuperare l'utente
+     * @return La view per visualizzare il libro
+     */
+    @RequestMapping(value = &quot;/inserimento-archivio&quot;,
+                        method = RequestMethod.POST)
+    public String inserisciDaDatabase(final Model model,
+                                   @RequestParam final int idLibro,
+                                   @RequestParam final int numCopie) {
+
+<span class="fc" id="L134">        UtenteRegistrato utente =</span>
+<span class="fc" id="L135">                (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc bfc" id="L136" title="All 4 branches covered.">        if (utente == null || utente.getTipo() != &quot;Biblioteca&quot;) {</span>
+<span class="fc" id="L137">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+        }
+<span class="fc" id="L139">        Biblioteca b = (Biblioteca) utente;</span>
+<span class="fc" id="L140">        Libro l = prenotazioneService.inserimentoDalDatabase(</span>
+<span class="fc" id="L141">                idLibro, b.getEmail(), numCopie);</span>
+<span class="fc" id="L142">        return &quot;redirect:/prenotazione-libri/&quot; + l.getIdLibro()</span>
+                + &quot;/visualizza-libro&quot;;
+    }
+
+    /**
+     * Implementa la funzionalità che permette inserire
+     * un libro manualmente tramite form.
+     * @param model Il model per recuperare l'utente
+     * @param libro Il libro da salvare
+     * @param numCopie il numero di copie possedute
+     * @param annoPubblicazione l'anno di pubblicazione
+     * @return La view per visualizzare il libro
+     */
+    @RequestMapping(value = &quot;/inserimento-manuale&quot;,
+                        method = RequestMethod.POST)
+    public String inserisciManualmente(final Model model,
+                                       final LibroForm libro,
+                                       final int numCopie,
+                                       final String annoPubblicazione) {
+
+<span class="fc" id="L162">        UtenteRegistrato utente =</span>
+<span class="fc" id="L163">                (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc bfc" id="L164" title="All 4 branches covered.">        if (utente == null || utente.getTipo() != &quot;Biblioteca&quot;) {</span>
+<span class="fc" id="L165">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+        }
+<span class="fc" id="L167">        Biblioteca b = (Biblioteca) utente;</span>
+<span class="fc" id="L168">        Libro l = new Libro();</span>
+<span class="fc" id="L169">        l.setTitolo(libro.getTitolo());</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (libro.getIsbn() != null) {</span>
+<span class="fc" id="L171">            l.setIsbn(libro.getIsbn());</span>
+        }
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (libro.getDescrizione() != null) {</span>
+<span class="fc" id="L174">            l.setDescrizione(libro.getDescrizione());</span>
+        }
+<span class="fc" id="L176">        l.setCasaEditrice(libro.getCasaEditrice());</span>
+<span class="fc" id="L177">        l.setAutore(libro.getAutore());</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (libro.getImmagineLibro() != null) {</span>
+            try {
+<span class="nc" id="L180">                byte[] imageBytes = libro.getImmagineLibro().getBytes();</span>
+                String base64Image =
+<span class="nc" id="L182">                        Base64.getEncoder().encodeToString(imageBytes);</span>
+<span class="nc" id="L183">                l.setImmagineLibro(base64Image);</span>
+<span class="nc" id="L184">            } catch (IOException e) {</span>
+<span class="nc" id="L185">                e.printStackTrace();</span>
+<span class="nc" id="L186">            }</span>
+        }
+<span class="fc" id="L188">        LocalDateTime anno = LocalDateTime.of(</span>
+<span class="fc" id="L189">                Integer.parseInt(annoPubblicazione), 1, 1, 1, 1);</span>
+<span class="fc" id="L190">        l.setAnnoDiPubblicazione(anno);</span>
+<span class="fc" id="L191">        Libro newLibro = prenotazioneService.inserimentoManuale(</span>
+<span class="fc" id="L192">                l, b.getEmail(), numCopie, libro.getGeneri());</span>
+<span class="fc" id="L193">        return &quot;redirect:/prenotazione-libri/&quot; + newLibro.getIdLibro()</span>
+                + &quot;/visualizza-libro&quot;;
+    }
+
+    /**
+     * Implementa la funzionalità che permette di
+     * visualizzare le biblioteche filtrate.
+     *
+     * @param stringa La stringa di ricerca
+     * @param filtro  L'informazione su cui filtrare
+     * @param model   Il model per salvare la lista
+     * @return La view che visualizza la lista
+     */
+    @RequestMapping(value = &quot;/ricerca&quot;, method = RequestMethod.GET)
+    public String visualizzaListaFiltrata(
+            @RequestParam(&quot;stringa&quot;) final String stringa,
+            @RequestParam(&quot;filtro&quot;) final String filtro,
+            final Model model) {
+
+<span class="fc bfc" id="L212" title="All 3 branches covered.">        switch (filtro) {</span>
+            case &quot;nome&quot;:
+<span class="fc" id="L214">                model.addAttribute(&quot;listaBiblioteche&quot;, prenotazioneService.</span>
+<span class="fc" id="L215">                        getBibliotecheByNome(stringa));</span>
+<span class="fc" id="L216">                break;</span>
+            case &quot;citta&quot;:
+<span class="fc" id="L218">                model.addAttribute(&quot;listaBiblioteche&quot;, prenotazioneService.</span>
+<span class="fc" id="L219">                        getBibliotecheByCitta(stringa));</span>
+<span class="fc" id="L220">                break;</span>
+            default:
+<span class="fc" id="L222">                model.addAttribute(&quot;listaBiblioteche&quot;,</span>
+<span class="fc" id="L223">                        prenotazioneService.getAllBiblioteche());</span>
+                break;
+        }
+<span class="fc" id="L226">        return &quot;biblioteca/visualizza-lista-biblioteche&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalitá di visualizzazione
+     * del profilo di una singola biblioteca.
+     * @param email della biblioteca
+     * @param model Per salvare la biblioteca
+     * @return La view di visualizzazione singola biblioteca
+     */
+    @RequestMapping(value = &quot;/{email}&quot;,
+            method = RequestMethod.GET)
+    public String visualizzaDatiBiblioteca(final @PathVariable String email,
+                                           final Model model) {
+<span class="fc" id="L240">        model.addAttribute(&quot;biblioteca&quot;,</span>
+<span class="fc" id="L241">                prenotazioneService.getBibliotecaById(email));</span>
+<span class="fc" id="L242">        return &quot;biblioteca/visualizza-singola-biblioteca&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
