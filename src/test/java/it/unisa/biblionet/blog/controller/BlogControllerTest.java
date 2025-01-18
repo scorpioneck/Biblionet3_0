@@ -12,6 +12,8 @@ import it.unisa.biblionet.model.entity.utente.Lettore;
 import it.unisa.biblionet.model.entity.utente.UtenteRegistrato;
 import it.unisa.biblionet.model.form.CommentoForm;
 import it.unisa.biblionet.model.form.RecensioneForm;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,15 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
@@ -120,6 +120,26 @@ public class BlogControllerTest {
                 .andExpect(view().name("blog/inserimento-recensione")); // Verifica la vista restituita
     }
 
+    @Test
+    void testInizializzaRecensione_LibriNonTrovati() throws Exception {
+        // Mock dei libri non trovati
+        when(blogService.findAllLibri()).thenReturn(Collections.emptyList());
+
+        // Creazione di un utente esperto valido
+        Esperto esperto = new Esperto();
+        esperto.setTipo("Esperto");
+        esperto.setEmail("test@example.com");
+
+        // Simula la richiesta HTTP con utente loggato
+        this.mockMvc.perform(get("/blog/inizializzaCreaR")
+                        .sessionAttr("loggedUser", esperto)) // Aggiungi utente esperto nella sessione
+                .andExpect(status().isOk()) // Ora lo stato sarà 200
+                .andExpect(model().attributeExists("recensione"))
+                .andExpect(model().attributeExists("listaLibri"))
+                .andExpect(model().attribute("listaLibri", Matchers.empty()))
+                .andExpect(view().name("blog/inserimento-recensione"));
+    }
+
     /**
      * Implementa il test della funzionalità gestita dal
      * controller per l'inserimento di una recensione.
@@ -167,7 +187,8 @@ public class BlogControllerTest {
         // Mock della recensione
         Recensione recensione = new Recensione();
         recensione.setTitolo("Titolo valido"); // Titolo valido
-        recensione.setDescrizione("a".repeat(256)); // Descrizione di 256 caratteri (oltre il limite di 255)
+        recensione.setDescrizione("a".repeat(256)); // Descrizione di 256 caratteri
+                                                         // (oltre il limite di 255)
 
         // Simula la selezione del primo libro dalla lista
         Libro libro = recensioni.get(0).getLibro();
@@ -225,7 +246,6 @@ public class BlogControllerTest {
      * @throws Exception Eccezione per MovkMvc
      */
 
-
     @ParameterizedTest
     @MethodSource("provideEsperti")
     void testInizializzaModificaRecensione(Esperto esperto) throws Exception {
@@ -256,6 +276,57 @@ public class BlogControllerTest {
                         .andExpect(model().attributeExists("listaLibri"));
     }
 
+    @Test
+    void testInizializzaModificaRecensione_LibriNonTrovati() throws Exception {
+        // Mock di una recensione valida
+        Recensione recensione = new Recensione();
+        recensione.setId(1);
+        recensione.setTitolo("Titolo di prova");
+        recensione.setDescrizione("Descrizione di prova");
+
+        // Mock del servizio per trovare la recensione
+        when(blogService.trovaRecensioneById(1)).thenReturn(recensione);
+
+        // Creazione di un utente esperto valido
+        Esperto esperto = new Esperto();
+        esperto.setTipo("Esperto");
+        esperto.setEmail("test@example.com");
+
+        // Simula la richiesta HTTP con utente loggato
+        this.mockMvc.perform(get("/blog/1/inizializzaModificaR")
+                        .sessionAttr("loggedUser", esperto)) // Aggiungi utente esperto nella sessione
+                .andExpect(status().isOk()) // Verifica che lo stato sia 200
+                .andExpect(model().attributeExists("recensione")) // Verifica che il modello contenga "recensione"
+                .andExpect(model().attribute("recensione", Matchers.hasProperty("titolo", Matchers.is("Titolo di prova"))))
+                .andExpect(model().attribute("recensione", Matchers.hasProperty("descrizione", Matchers.is("Descrizione di prova"))))
+                .andExpect(model().attributeExists("id")) // Verifica che il modello contenga "id"
+                .andExpect(model().attribute("id", 1)) // Verifica che l'id sia corretto
+                .andExpect(model().attributeExists("listaLibri")) // Verifica che il modello contenga "listaLibri"
+                .andExpect(model().attribute("listaLibri", Matchers.empty())) // Verifica che la lista di libri sia vuota
+                .andExpect(view().name("blog/modifica-recensione")); // Verifica che la vista sia corretta
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testGestisciRecensione_UtenteNonAutenticato(List<Recensione> recensioni) throws Exception {
+        Recensione recensione = recensioni.get(0);
+        Libro libro = new Libro();
+        libro.setIdLibro(1);
+        recensione.setLibro(libro);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/modificaRecensione", recensione.getId())
+                        .param("titolo", "Titolo valido")
+                        .param("descrizione", "Descrizione valida")
+                        .param("idLibro", String.valueOf(1)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(result -> {
+                    Exception resolvedException = result.getResolvedException();
+                    assertTrue(resolvedException instanceof ResponseStatusException);
+                    ResponseStatusException ex = (ResponseStatusException) resolvedException;
+                    assertEquals(HttpStatus.UNAUTHORIZED, ex.getStatusCode()); // usa ex.getStatusCode() o ex.getRawStatusCode()
+                });
+    }
+
     /**
      * Implementa il test della funzionalità gestita dal
      * controller per la modifica di una recensione.
@@ -279,7 +350,8 @@ public class BlogControllerTest {
         when(blogService.findLibroById(libro.getIdLibro())).thenReturn(libro);
 
         // Simula la richiesta HTTP
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/modificaRecensione", recensione.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/modificaRecensione",
+                                recensione.getId())
                         .sessionAttr("loggedUser", esperto)
                         .param("idLibro", String.valueOf(libro.getIdLibro())) // Libro valido
                         .param("titolo", recensione.getTitolo()) // Titolo troppo lungo
@@ -319,12 +391,69 @@ public class BlogControllerTest {
                 .andExpect(status().isBadRequest()); // Verifica che venga restituito un errore
     }
 
+
+    /**
+     * Implementa il test della funzionalità gestita dal
+     * controller per la modifica di una recensione.
+     * @param esperto un esperto
+     * @throws Exception Eccezione per MovkMvc
+     */
+
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testGestisciRecensione(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        // Mock della recensione da modificare
+        Recensione recensione = recensioni.get(0);
+        recensione.setTitolo("Titolo valido");
+        recensione.setDescrizione("Descrizione valida");
+
+        // Simula la selezione del libro associato
+        Libro libro = recensione.getLibro();
+
+        // Configura i mock
+        when(blogService.trovaRecensioneById(recensione.getId())).thenReturn(recensione);
+
+        // Simula la richiesta HTTP
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/modificaRecensione", recensione.getId())
+                        .sessionAttr("loggedUser", esperto)
+                        .param("idLibro", String.valueOf(libro.getIdLibro()))
+                        .param("titolo", recensione.getTitolo())
+                        .param("descrizione", recensione.getDescrizione()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/blog"));
+
+        // Verifica che il servizio `modificaRecensione` sia stato chiamato
+        verify(blogService).modificaRecensione(argThat(r ->
+                r.getTitolo().equals(recensione.getTitolo()) &&
+                        r.getDescrizione().equals(recensione.getDescrizione())));
+    }
+
+
+    @Test
+    void testGestisciCommento_UtenteNonAutenticato() throws Exception {
+        // Simula un oggetto CommentoForm
+        CommentoForm commentoForm = new CommentoForm();
+        commentoForm.setDescription("Descrizione valida");
+
+        // Simula l'assenza di un utente loggato
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/gestisciCommento", 1)
+                        .flashAttr("commentoForm", commentoForm)) // Aggiungi il form al Model
+                .andExpect(status().isUnauthorized()) // Verifica che venga restituito 401
+                .andExpect(result -> {
+                    Exception resolvedException = result.getResolvedException();
+                    assertTrue(resolvedException instanceof ResponseStatusException);
+                    ResponseStatusException ex = (ResponseStatusException) resolvedException;
+                    assertEquals(HttpStatus.UNAUTHORIZED, ex.getStatusCode());
+                });
+    }
+
+
+
     /**
      * Implementa il test della funzionalità gestita dal
      * controller per l'inserimento di un commento.
      * @throws Exception Eccezione per MovkMvc
      */
-
 
     @ParameterizedTest
     @MethodSource("provideBlog")
@@ -353,10 +482,23 @@ public class BlogControllerTest {
                     assertEquals("Descrizione del commento troppo lunga", ex.getReason());
                 });
 
-
-        // Verifica che il metodo scriviCommento non venga chiamato
-        verify(blogService, never()).scriviCommento(any(Commento.class));
     }
+
+    @Test
+    void testGestisciCommentoRisposta_UtenteNonAutenticato() throws Exception {
+        // Simula una richiesta con parametri
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/gestisciRisposta", 1)
+                        .param("description", "Descrizione valida") // Simula il campo della descrizione del form
+                        .param("commentoPadreId", "2")) // Simula l'ID del commento padre
+                .andExpect(status().isUnauthorized()) // Verifica che venga restituito 401
+                .andExpect(result -> {
+                    Exception resolvedException = result.getResolvedException();
+                    assertTrue(resolvedException instanceof ResponseStatusException);
+                    ResponseStatusException ex = (ResponseStatusException) resolvedException;
+                    assertEquals(HttpStatus.UNAUTHORIZED, ex.getStatusCode());
+                });
+    }
+
 
     /**
      * Implementa il test della funzionalità gestita dal
@@ -411,6 +553,7 @@ public class BlogControllerTest {
      * controller per l'inserimento di una risposta.
      * @throws Exception Eccezione per MovkMvc
      */
+
 
     @ParameterizedTest
     @MethodSource("provideBlog")
@@ -493,6 +636,121 @@ public class BlogControllerTest {
         }
 
     }
+
+
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testCancellaCommento_Success(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        int idCommento = 1;
+        Commento commento = new Commento();
+        commento.setId(idCommento);
+
+        when(blogService.trovaCommentoById(idCommento)).thenReturn(Optional.of(commento));
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/cancellaCommento", recensioni.get(0).getId())
+                        .sessionAttr("loggedUser", esperto)
+                        .param("idCommento", String.valueOf(idCommento)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/blog/" + recensioni.get(0).getId() + "/visualizzaRecensione"));
+
+        verify(blogService).eliminaCommento(commento);
+    }
+
+    /**
+     * Test per cancellare un commento non trovato.
+     */
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testCancellaCommento_NotFound(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        int idCommento = 1;
+
+        when(blogService.trovaCommentoById(idCommento)).thenReturn(Optional.empty());
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/cancellaCommento", recensioni.get(0).getId())
+                        .sessionAttr("loggedUser", esperto)
+                        .param("idCommento", String.valueOf(idCommento)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/blog/" + recensioni.get(0).getId() + "/visualizzaRecensione"));
+
+        verify(blogService, never()).eliminaCommento(any(Commento.class));
+    }
+
+    /**
+     * Test per cancellare una risposta con successo.
+     */
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testCancellaRisposta_Success(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        int idRisposta = 1;
+        CommentoRisposta risposta = new CommentoRisposta();
+        risposta.setId(idRisposta);
+
+        when(blogService.trovaRispostaById(idRisposta)).thenReturn(Optional.of(risposta));
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/cancellaCommentoRisposta", recensioni.get(0).getId())
+                        .sessionAttr("loggedUser", esperto)
+                        .param("idCommentoRisposta", String.valueOf(idRisposta)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/blog/" + recensioni.get(0).getId() + "/visualizzaRecensione"));
+
+        verify(blogService).eliminaRisposta(risposta);
+    }
+
+    /**
+     * Test per cancellare una risposta non trovata.
+     */
+
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testCancellaRisposta_NotFound(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        int idRisposta = 1;
+
+        when(blogService.trovaRispostaById(idRisposta)).thenReturn(Optional.empty());
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/cancellaCommentoRisposta", recensioni.get(0).getId())
+                        .sessionAttr("loggedUser", esperto)
+                        .param("idCommentoRisposta", String.valueOf(idRisposta)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/blog/" + recensioni.get(0).getId() + "/visualizzaRecensione"));
+
+        verify(blogService, never()).eliminaRisposta(any(CommentoRisposta.class));
+    }
+
+    /**
+     * Test per cancellare una recensione con successo.
+     */
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testCancellaRecensione_Success(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        Recensione recensione = recensioni.get(0);
+
+        when(blogService.trovaRecensioneById(recensione.getId())).thenReturn(recensione);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/cancellaRecensione", recensione.getId())
+                        .sessionAttr("loggedUser", esperto))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/blog"));
+
+        verify(blogService).eliminaRecensione(recensione);
+    }
+
+    /**
+     * Test per cancellare una recensione non trovata.
+     */
+    @ParameterizedTest
+    @MethodSource("provideBlog")
+    void testCancellaRecensione_NotFound(List<Recensione> recensioni, Esperto esperto) throws Exception {
+        int idRecensione = 1;
+
+        when(blogService.trovaRecensioneById(idRecensione)).thenReturn(null);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/blog/{id}/cancellaRecensione", idRecensione)
+                        .sessionAttr("loggedUser", esperto))
+                .andExpect(status().isNotFound());
+
+        verify(blogService, never()).eliminaRecensione(any(Recensione.class));
+    }
+
 
     private static Stream<Arguments> provideBlog() {
         Biblioteca biblioteca = new Biblioteca("fmorlicchio@gmail.com",

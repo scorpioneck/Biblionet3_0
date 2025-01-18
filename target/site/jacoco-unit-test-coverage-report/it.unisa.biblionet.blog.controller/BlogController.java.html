@@ -109,14 +109,12 @@ public class BlogController {
 
 <span class="pc bpc" id="L110" title="2 of 4 branches missed.">        if(libroList == null || libroList.isEmpty()){</span>
 <span class="fc" id="L111">            libroList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L112">            LocalDateTime specificDateTime = LocalDateTime.of(2021, 12, 30, 14, 30); // 30 di</span>
-<span class="fc" id="L113">            libroList.add(new Libro(&quot;non si è trovato&quot;,&quot;un cazzo&quot;,&quot;ritenta&quot;,specificDateTime,&quot;nulla&quot;,&quot;non esiste&quot;));</span>
         }
 
-<span class="fc" id="L116">        model.addAttribute(&quot;recensione&quot;, recensioneForm);</span>
-<span class="fc" id="L117">        model.addAttribute(&quot;listaLibri&quot;, libroList);</span>
+<span class="fc" id="L114">        model.addAttribute(&quot;recensione&quot;, recensioneForm);</span>
+<span class="fc" id="L115">        model.addAttribute(&quot;listaLibri&quot;, libroList);</span>
 
-<span class="fc" id="L119">        return &quot;blog/inserimento-recensione&quot;;</span>
+<span class="fc" id="L117">        return &quot;blog/inserimento-recensione&quot;;</span>
     }
 
     /**
@@ -131,38 +129,38 @@ public class BlogController {
     @RequestMapping(value= &quot;/creaRecensione&quot;,method = RequestMethod.POST)
     public String creaRecensione(final Model model, @ModelAttribute RecensioneForm recensioneForm
     ,@RequestParam(&quot;idLibro&quot;) final int idLibro) {
-<span class="fc" id="L134">        var utente = (UtenteRegistrato) model.getAttribute((&quot;loggedUser&quot;));</span>
+<span class="fc" id="L132">        var utente = (UtenteRegistrato) model.getAttribute((&quot;loggedUser&quot;));</span>
 
-<span class="pc bpc" id="L136" title="2 of 4 branches missed.">        if (utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="nc" id="L137">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">        if (utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="nc" id="L135">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
         // Controllo sulla lunghezza del titolo
-<span class="pc bpc" id="L141" title="1 of 4 branches missed.">        if (recensioneForm.getTitolo() == null || recensioneForm.getTitolo().length() &gt; 30) {</span>
-<span class="fc" id="L142">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Titolo troppo lungo&quot;);</span>
+<span class="pc bpc" id="L139" title="1 of 4 branches missed.">        if (recensioneForm.getTitolo() == null || recensioneForm.getTitolo().length() &gt; 30) {</span>
+<span class="fc" id="L140">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Titolo troppo lungo&quot;);</span>
         }
 
         // Controllo sulla lunghezza della descrizione
-<span class="pc bpc" id="L146" title="1 of 4 branches missed.">        if (recensioneForm.getDescrizione() == null || recensioneForm.getDescrizione().length() &gt; 255) {</span>
-<span class="fc" id="L147">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione troppo lunga&quot;);</span>
+<span class="pc bpc" id="L144" title="1 of 4 branches missed.">        if (recensioneForm.getDescrizione() == null || recensioneForm.getDescrizione().length() &gt; 255) {</span>
+<span class="fc" id="L145">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione troppo lunga&quot;);</span>
         }
 
-<span class="fc" id="L150">        Recensione recensione = new Recensione();</span>
+<span class="fc" id="L148">        Recensione recensione = new Recensione();</span>
 
-<span class="fc" id="L152">        var esperto = (Esperto) utente;</span>
-<span class="fc" id="L153">        Libro libro = blogService.findLibroById(idLibro);</span>
+<span class="fc" id="L150">        var esperto = (Esperto) utente;</span>
+<span class="fc" id="L151">        Libro libro = blogService.findLibroById(idLibro);</span>
 
-<span class="fc" id="L155">        recensione.setDescrizione(recensioneForm.getDescrizione());</span>
-<span class="fc" id="L156">        recensione.setTitolo(recensioneForm.getTitolo());</span>
-<span class="fc" id="L157">        recensione.setEsperto(esperto);</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        if(libro != null) {</span>
-<span class="fc" id="L159">            recensione.setLibro(libro);</span>
+<span class="fc" id="L153">        recensione.setDescrizione(recensioneForm.getDescrizione());</span>
+<span class="fc" id="L154">        recensione.setTitolo(recensioneForm.getTitolo());</span>
+<span class="fc" id="L155">        recensione.setEsperto(esperto);</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if(libro != null) {</span>
+<span class="fc" id="L157">            recensione.setLibro(libro);</span>
         }
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if(recensione != null) {</span>
-<span class="fc" id="L162">            blogService.creaRecensione(recensione);</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if(recensione != null) {</span>
+<span class="fc" id="L160">            blogService.creaRecensione(recensione);</span>
         }
 
-<span class="fc" id="L165">        return &quot;redirect:/blog&quot; ;</span>
+<span class="fc" id="L163">        return &quot;redirect:/blog&quot; ;</span>
     }
 
     /**
@@ -176,22 +174,22 @@ public class BlogController {
     @RequestMapping(value= &quot;{id}/inizializzaModificaR&quot;,method = RequestMethod.GET)
     public String inizializzaModificaRecensione(final Model model,@PathVariable int id ,@ModelAttribute RecensioneForm recensioneForm) {
 
-<span class="fc" id="L179">        var utente = (UtenteRegistrato) model.getAttribute((&quot;loggedUser&quot;));</span>
-<span class="pc bpc" id="L180" title="2 of 4 branches missed.">        if (utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="nc" id="L181">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="fc" id="L177">        var utente = (UtenteRegistrato) model.getAttribute((&quot;loggedUser&quot;));</span>
+<span class="pc bpc" id="L178" title="2 of 4 branches missed.">        if (utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="nc" id="L179">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
-<span class="fc" id="L184">        List&lt;Libro&gt; libroList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L182">        List&lt;Libro&gt; libroList = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L186">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
-<span class="fc" id="L187">        recensioneForm.setTitolo(recensione.getTitolo());</span>
-<span class="fc" id="L188">        recensioneForm.setDescrizione(recensione.getDescrizione());</span>
+<span class="fc" id="L184">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
+<span class="fc" id="L185">        recensioneForm.setTitolo(recensione.getTitolo());</span>
+<span class="fc" id="L186">        recensioneForm.setDescrizione(recensione.getDescrizione());</span>
 
-<span class="fc" id="L190">        model.addAttribute(&quot;recensione&quot;, recensioneForm);</span>
-<span class="fc" id="L191">        model.addAttribute(&quot;id&quot;,id);</span>
-<span class="fc" id="L192">        model.addAttribute(&quot;listaLibri&quot;, libroList);</span>
+<span class="fc" id="L188">        model.addAttribute(&quot;recensione&quot;, recensioneForm);</span>
+<span class="fc" id="L189">        model.addAttribute(&quot;id&quot;,id);</span>
+<span class="fc" id="L190">        model.addAttribute(&quot;listaLibri&quot;, libroList);</span>
 
-<span class="fc" id="L194">        return &quot;blog/modifica-recensione&quot;;</span>
+<span class="fc" id="L192">        return &quot;blog/modifica-recensione&quot;;</span>
     }
 
     /**
@@ -209,34 +207,38 @@ public class BlogController {
                                      @ModelAttribute RecensioneForm recensioneForm,
                                      @RequestParam(&quot;idLibro&quot;) final int idLibro) {
 
-<span class="fc" id="L212">        Consumer&lt;Recensione&gt; operazione = recensione -&gt; {</span>
-            // Operazioni personalizzate su recensione
-<span class="nc" id="L214">            blogService.modificaRecensione(recensione);</span>
-<span class="nc" id="L215">        };</span>
-
-
-<span class="fc" id="L218">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
-<span class="pc bpc" id="L219" title="2 of 4 branches missed.">        if (utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="nc" id="L220">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="fc" id="L210">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="pc bpc" id="L211" title="1 of 4 branches missed.">        if (utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="fc" id="L212">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
+<span class="fc" id="L215">        Consumer&lt;Recensione&gt; operazione = recensione -&gt; {</span>
+            // Operazioni personalizzate su recensione
+<span class="fc" id="L217">            blogService.modificaRecensione(recensione);</span>
+<span class="fc" id="L218">        };</span>
+
         // Controllo sulla lunghezza del titolo
-<span class="pc bpc" id="L224" title="1 of 4 branches missed.">        if (recensioneForm.getTitolo() == null || recensioneForm.getTitolo().length() &gt; 30) {</span>
-<span class="fc" id="L225">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Titolo troppo lungo&quot;);</span>
+<span class="pc bpc" id="L221" title="1 of 4 branches missed.">        if (recensioneForm.getTitolo() == null || recensioneForm.getTitolo().length() &gt; 30) {</span>
+<span class="fc" id="L222">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Titolo troppo lungo&quot;);</span>
         }
 
         // Controllo sulla lunghezza della descrizione
-<span class="pc bpc" id="L229" title="2 of 4 branches missed.">        if (recensioneForm.getDescrizione() == null || recensioneForm.getDescrizione().length() &gt; 255) {</span>
-<span class="fc" id="L230">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione troppo lunga&quot;);</span>
+<span class="pc bpc" id="L226" title="1 of 4 branches missed.">        if (recensioneForm.getDescrizione() == null || recensioneForm.getDescrizione().length() &gt; 255) {</span>
+<span class="fc" id="L227">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione troppo lunga&quot;);</span>
         }
 
-<span class="nc" id="L233">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
-<span class="nc" id="L234">        recensione.setTitolo(recensioneForm.getTitolo());</span>
-<span class="nc" id="L235">        recensione.setDescrizione(recensioneForm.getDescrizione());</span>
+<span class="fc" id="L230">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
 
-<span class="nc" id="L237">        operazione.accept(recensione);</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (recensione == null) {</span>
+<span class="nc" id="L233">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Recensione non trovata&quot;);</span>
+        }
 
-<span class="nc" id="L239">        return &quot;redirect:/blog&quot;;</span>
+<span class="fc" id="L236">        recensione.setTitolo(recensioneForm.getTitolo());</span>
+<span class="fc" id="L237">        recensione.setDescrizione(recensioneForm.getDescrizione());</span>
+
+<span class="fc" id="L239">        operazione.accept(recensione);</span>
+
+<span class="fc" id="L241">        return &quot;redirect:/blog&quot;;</span>
     }
 
 
@@ -251,39 +253,43 @@ public class BlogController {
 
     @RequestMapping(value= &quot;/{id}/gestisciCommento&quot;,method = RequestMethod.POST)
     public String gestisciCommento(@PathVariable int id, final Model model, @ModelAttribute CommentoForm commento) {
-<span class="fc" id="L254">    var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L256">    var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="pc bpc" id="L256" title="4 of 6 branches missed.">        if (utente == null || (!utente.getTipo().equals(&quot;Esperto&quot;) &amp;&amp; !utente.getTipo().equals(&quot;Lettore&quot;))) {</span>
-<span class="nc" id="L257">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="pc bpc" id="L258" title="3 of 6 branches missed.">        if (utente == null || (!utente.getTipo().equals(&quot;Esperto&quot;) &amp;&amp; !utente.getTipo().equals(&quot;Lettore&quot;))) {</span>
+<span class="fc" id="L259">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
         // Controllo sulla lunghezza della descrizione
-<span class="pc bpc" id="L261" title="1 of 4 branches missed.">        if (commento.getDescription() == null || commento.getDescription().length() &gt; 255) {</span>
-<span class="fc" id="L262">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione del commento troppo lunga&quot;);</span>
+<span class="pc bpc" id="L263" title="1 of 4 branches missed.">        if (commento.getDescription() == null || commento.getDescription().length() &gt; 255) {</span>
+<span class="fc" id="L264">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione del commento troppo lunga&quot;);</span>
         }
 
-<span class="fc" id="L265">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
+<span class="fc" id="L267">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
 
-<span class="fc" id="L267">        Commento com = new Commento();</span>
-<span class="fc" id="L268">        com.setDescription(commento.getDescription());</span>
-<span class="fc" id="L269">        com.setRecensione(recensione);</span>
-<span class="fc" id="L270">        com.setUtente(utente.getEmail());</span>
-
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">        if(utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="fc" id="L273">            Esperto esperto = (Esperto) model.getAttribute(&quot;loggedUser&quot;);</span>
-<span class="fc" id="L274">            com.setTitle(esperto.getUsername());</span>
-<span class="fc" id="L275">        }else{</span>
-<span class="nc" id="L276">            Lettore lettore = (Lettore) model.getAttribute(&quot;loggedUser&quot;);</span>
-<span class="nc" id="L277">            com.setTitle(lettore.getUsername());</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">        if (recensione == null) {</span>
+<span class="nc" id="L270">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Recensione non trovata&quot;);</span>
         }
 
-<span class="fc" id="L280">        blogService.scriviCommento(com);</span>
+<span class="fc" id="L273">        Commento com = new Commento();</span>
+<span class="fc" id="L274">        com.setDescription(commento.getDescription());</span>
+<span class="fc" id="L275">        com.setRecensione(recensione);</span>
+<span class="fc" id="L276">        com.setUtente(utente.getEmail());</span>
 
-<span class="fc" id="L282">        model.addAttribute(&quot;commentoForm&quot;, new CommentoForm());</span>
-<span class="fc" id="L283">        model.addAttribute(&quot;recensione&quot;, recensione);</span>
-<span class="fc" id="L284">        model.addAttribute(&quot;commento&quot;, new Commento());</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">        if(utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="fc" id="L279">            Esperto esperto = (Esperto) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L280">            com.setTitle(esperto.getUsername());</span>
+<span class="fc" id="L281">        }else{</span>
+<span class="nc" id="L282">            Lettore lettore = (Lettore) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="nc" id="L283">            com.setTitle(lettore.getUsername());</span>
+        }
 
-<span class="fc" id="L286">        return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
+<span class="fc" id="L286">        blogService.scriviCommento(com);</span>
+
+<span class="fc" id="L288">        model.addAttribute(&quot;commentoForm&quot;, new CommentoForm());</span>
+<span class="fc" id="L289">        model.addAttribute(&quot;recensione&quot;, recensione);</span>
+<span class="fc" id="L290">        model.addAttribute(&quot;commento&quot;, new Commento());</span>
+
+<span class="fc" id="L292">        return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
     }
 
 
@@ -301,44 +307,48 @@ public class BlogController {
     public String gestisciCommentoRisposta(@PathVariable int id, final Model model, @ModelAttribute CommentoForm commento,
                                            @RequestParam(&quot;commentoPadreId&quot;) Integer commentoPadreId) {
 
-<span class="fc" id="L304">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L310">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="pc bpc" id="L306" title="4 of 6 branches missed.">        if (utente == null || (!utente.getTipo().equals(&quot;Esperto&quot;) &amp;&amp; !utente.getTipo().equals(&quot;Lettore&quot;))) {</span>
-<span class="nc" id="L307">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="pc bpc" id="L312" title="3 of 6 branches missed.">        if (utente == null || (!utente.getTipo().equals(&quot;Esperto&quot;) &amp;&amp; !utente.getTipo().equals(&quot;Lettore&quot;))) {</span>
+<span class="fc" id="L313">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
         // Controllo sulla lunghezza della descrizione
-<span class="pc bpc" id="L311" title="1 of 4 branches missed.">        if (commento.getDescription() == null || commento.getDescription().length() &gt; 255) {</span>
-<span class="fc" id="L312">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione del commento troppo lunga&quot;);</span>
+<span class="pc bpc" id="L317" title="1 of 4 branches missed.">        if (commento.getDescription() == null || commento.getDescription().length() &gt; 255) {</span>
+<span class="fc" id="L318">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Descrizione del commento troppo lunga&quot;);</span>
         }
 
+<span class="fc" id="L321">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
 
-<span class="fc" id="L316">        Recensione recensione = blogService.trovaRecensioneById(id);</span>
-<span class="fc" id="L317">        CommentoRisposta risposta = new CommentoRisposta();</span>
-<span class="fc" id="L318">        Optional&lt;Commento&gt; commentoOptional = blogService.trovaCommentoById(commentoPadreId);</span>
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">        if(commentoOptional.isPresent()) {</span>
-<span class="fc" id="L320">            Commento com2 = commentoOptional.get();</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">        if (recensione == null) {</span>
+<span class="nc" id="L324">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Recensione non trovata&quot;);</span>
+        }
 
-<span class="fc" id="L322">            risposta.setDescription(commento.getDescription());</span>
-<span class="fc" id="L323">            risposta.setCommentoPadre(com2);</span>
-<span class="fc" id="L324">            risposta.setUtente(utente.getEmail());</span>
+<span class="fc" id="L327">        CommentoRisposta risposta = new CommentoRisposta();</span>
+<span class="fc" id="L328">        Optional&lt;Commento&gt; commentoOptional = blogService.trovaCommentoById(commentoPadreId);</span>
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">        if(commentoOptional.isPresent()) {</span>
+<span class="fc" id="L330">            Commento com2 = commentoOptional.get();</span>
 
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">            if(utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="fc" id="L327">                Esperto esperto = (Esperto) model.getAttribute(&quot;loggedUser&quot;);</span>
-<span class="fc" id="L328">                risposta.setTitle(esperto.getUsername());</span>
-<span class="fc" id="L329">            }else{</span>
-<span class="nc" id="L330">                Lettore lettore = (Lettore) model.getAttribute(&quot;loggedUser&quot;);</span>
-<span class="nc" id="L331">                risposta.setTitle(lettore.getUsername());</span>
+<span class="fc" id="L332">            risposta.setDescription(commento.getDescription());</span>
+<span class="fc" id="L333">            risposta.setCommentoPadre(com2);</span>
+<span class="fc" id="L334">            risposta.setUtente(utente.getEmail());</span>
+
+<span class="pc bpc" id="L336" title="1 of 2 branches missed.">            if(utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="fc" id="L337">                Esperto esperto = (Esperto) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L338">                risposta.setTitle(esperto.getUsername());</span>
+<span class="fc" id="L339">            }else{</span>
+<span class="nc" id="L340">                Lettore lettore = (Lettore) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="nc" id="L341">                risposta.setTitle(lettore.getUsername());</span>
             }
 
-<span class="fc" id="L334">            blogService.rispostaCommento(risposta);</span>
+<span class="fc" id="L344">            blogService.rispostaCommento(risposta);</span>
         }
 
-<span class="fc" id="L337">        model.addAttribute(&quot;commentoForm&quot;, new CommentoForm());</span>
-<span class="fc" id="L338">        model.addAttribute(&quot;recensione&quot;, recensione);</span>
-<span class="fc" id="L339">        model.addAttribute(&quot;commentoRisposta&quot;, new CommentoRisposta());</span>
+<span class="fc" id="L347">        model.addAttribute(&quot;commentoForm&quot;, new CommentoForm());</span>
+<span class="fc" id="L348">        model.addAttribute(&quot;recensione&quot;, recensione);</span>
+<span class="fc" id="L349">        model.addAttribute(&quot;commentoRisposta&quot;, new CommentoRisposta());</span>
 
-<span class="fc" id="L341">        return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
+<span class="fc" id="L351">        return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
     }
 
     /**
@@ -354,23 +364,22 @@ public class BlogController {
     public String cancellaCommenti(@PathVariable final int id,final Model model,
                                    @RequestParam(&quot;idCommento&quot;) final int idCommento) {
 
-<span class="nc" id="L357">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L367">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="nc bnc" id="L359" title="All 4 branches missed.">        if(utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="nc" id="L360">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="pc bpc" id="L369" title="2 of 4 branches missed.">        if(utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="nc" id="L370">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
-<span class="nc" id="L363">        Optional&lt;Commento&gt; commentoOptional = blogService.trovaCommentoById(idCommento);</span>
+<span class="fc" id="L373">        Optional&lt;Commento&gt; commentoOptional = blogService.trovaCommentoById(idCommento);</span>
 
-<span class="nc bnc" id="L365" title="All 2 branches missed.">        if (commentoOptional.isPresent()) {</span>
-<span class="nc" id="L366">         Commento commento = commentoOptional.get();</span>
-<span class="nc" id="L367">            blogService.eliminaCommento(commento);</span>
-<span class="nc" id="L368">        }else{</span>
-<span class="nc" id="L369">            return &quot;redirect:/blog/&quot; + id + &quot;/visualizzaRecensione&quot;;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        if (commentoOptional.isPresent()) {</span>
+<span class="fc" id="L376">         Commento commento = commentoOptional.get();</span>
+<span class="fc" id="L377">            blogService.eliminaCommento(commento);</span>
+<span class="fc" id="L378">        }else{</span>
+<span class="fc" id="L379">            return &quot;redirect:/blog/&quot; + id + &quot;/visualizzaRecensione&quot;;</span>
         }
 
-
-<span class="nc" id="L373">    return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
+<span class="fc" id="L382">    return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
     }
 
     /**
@@ -381,28 +390,27 @@ public class BlogController {
      * @return la pagina di visualizza recensione .
      */
 
-
     @RequestMapping(value= &quot;{id}/cancellaCommentoRisposta&quot;, method = RequestMethod.POST)
     public String cancellaRisposta(@PathVariable final int id,final Model model,
                                            @RequestParam(&quot;idCommentoRisposta&quot;) final int idCommentoRisposta) {
 
-<span class="nc" id="L389">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L397">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="nc bnc" id="L391" title="All 4 branches missed.">        if(utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="nc" id="L392">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="pc bpc" id="L399" title="2 of 4 branches missed.">        if(utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="nc" id="L400">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
         }
 
-<span class="nc" id="L395">        Optional&lt;CommentoRisposta&gt; comRispostaOptional = blogService.trovaRispostaById(idCommentoRisposta);</span>
+<span class="fc" id="L403">        Optional&lt;CommentoRisposta&gt; comRispostaOptional = blogService.trovaRispostaById(idCommentoRisposta);</span>
 
-<span class="nc bnc" id="L397" title="All 2 branches missed.">        if(comRispostaOptional.isPresent()){</span>
-<span class="nc" id="L398">            CommentoRisposta comRisposta = comRispostaOptional.get();</span>
-<span class="nc" id="L399">            blogService.eliminaRisposta(comRisposta);</span>
-<span class="nc" id="L400">        }</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        if(comRispostaOptional.isPresent()){</span>
+<span class="fc" id="L406">            CommentoRisposta comRisposta = comRispostaOptional.get();</span>
+<span class="fc" id="L407">            blogService.eliminaRisposta(comRisposta);</span>
+<span class="fc" id="L408">        }</span>
         else{
-<span class="nc" id="L402">            return &quot;redirect:/blog/&quot; + id + &quot;/visualizzaRecensione&quot;;</span>
+<span class="fc" id="L410">            return &quot;redirect:/blog/&quot; + id + &quot;/visualizzaRecensione&quot;;</span>
         }
 
-<span class="nc" id="L405">        return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
+<span class="fc" id="L413">        return &quot;redirect:/blog/&quot;+id+&quot;/visualizzaRecensione&quot;;</span>
     }
 
     /**
@@ -417,16 +425,21 @@ public class BlogController {
     @RequestMapping(value= &quot;{id}/cancellaRecensione&quot;, method = RequestMethod.POST)
         public String cancellaRecensione(@PathVariable final int id,final Model model) {
 
-<span class="nc" id="L420">          var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L428">          var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="nc bnc" id="L422" title="All 4 branches missed.">           if(utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
-<span class="nc" id="L423">               throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
+<span class="pc bpc" id="L430" title="2 of 4 branches missed.">           if(utente == null || !utente.getTipo().equals(&quot;Esperto&quot;)){</span>
+<span class="nc" id="L431">               throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);</span>
            }
 
-<span class="nc" id="L426">           Recensione recensione = blogService.trovaRecensioneById(id);</span>
-<span class="nc" id="L427">           blogService.eliminaRecensione(recensione);</span>
+<span class="fc" id="L434">           Recensione recensione = blogService.trovaRecensioneById(id);</span>
 
-<span class="nc" id="L429">           return &quot;redirect:/blog&quot;;</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">            if (recensione == null) {</span>
+<span class="fc" id="L437">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Recensione non trovata&quot;);</span>
+            }
+
+<span class="fc" id="L440">           blogService.eliminaRecensione(recensione);</span>
+
+<span class="fc" id="L442">           return &quot;redirect:/blog&quot;;</span>
     }
 
 }

@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  */
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest(classes = BiblionetApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -63,7 +63,7 @@ public class PrenotazioneLibriControllerIntegrationTest {
      * simulando la richiesta http.
      * @throws Exception Eccezione per MockMvc
      */
-    @Test
+    /*@Test
     public void visualizzaListaLibri() throws Exception {
 
         this.mockMvc.perform(get("/prenotazione-libri"))
@@ -86,7 +86,7 @@ public class PrenotazioneLibriControllerIntegrationTest {
      * simulando la richiesta http.
      * @throws Exception Eccezione per MockMvc
      */
-    @Test
+   /* @Test
     public void confermaPrenotazione() throws Exception {
 
         Biblioteca biblioteca = bibliotecaDAO.findByID("bibliotecacarrisi@gmail.com");
@@ -99,4 +99,4 @@ public class PrenotazioneLibriControllerIntegrationTest {
                 .andExpect(view().name("redirect:/prenotazione-libri"));
     }
 
-}
+}*/

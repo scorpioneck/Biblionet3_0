@@ -17,6 +17,9 @@ import it.unisa.biblionet.utils.mapper.CategoriaGenereMapper;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Tutte le funzionalità di ChatbotService implementate
+ * */
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +49,7 @@ public class ChatBotServiceImp implements ChatBotService{
 
 
     @Override
-    public Risposta trovaRispostaById(int idRisposta) {
+    public Risposta generaRisposta(int idRisposta) {
        return rispostaDAO.findById(idRisposta).orElseThrow(
                () -> new EntityNotFoundException("Risposta non trovata" + idRisposta));
     }
@@ -62,14 +65,14 @@ public class ChatBotServiceImp implements ChatBotService{
 
     /**
      * Implementa la funzionlità di calcola il genere Preferito della persona
-     * @param risposteId una lista di interi
+     * @param opzioneId una lista di interi
      * @return domandaRisposta
      */
 
     @Override
-    public Genere calcolaGenerePreferito(List<Integer> risposteId) {
+    public Genere calcolaGenerePreferito(List<Integer> opzioneId) {
         // Recupera le risposte dal database
-        List<Domanda> risposte = domandaDAO.findAllById(risposteId);
+        List<Domanda> risposte = domandaDAO.findAllById(opzioneId);
 
         // Associa ogni risposta al genere
         Map<String, Long> conteggioGeneri = risposte.stream()

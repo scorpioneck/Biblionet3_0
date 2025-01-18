@@ -109,8 +109,6 @@ public class BlogController {
 
         if(libroList == null || libroList.isEmpty()){
             libroList = new ArrayList<>();
-            LocalDateTime specificDateTime = LocalDateTime.of(2021, 12, 30, 14, 30); // 30 di
-            libroList.add(new Libro("non si è trovato","un cazzo","ritenta",specificDateTime,"nulla","non esiste"));
         }
 
         model.addAttribute("recensione", recensioneForm);
@@ -209,16 +207,15 @@ public class BlogController {
                                      @ModelAttribute RecensioneForm recensioneForm,
                                      @RequestParam("idLibro") final int idLibro) {
 
-        Consumer<Recensione> operazione = recensione -> {
-            // Operazioni personalizzate su recensione
-            blogService.modificaRecensione(recensione);
-        };
-
-
         var utente = (UtenteRegistrato) model.getAttribute("loggedUser");
         if (utente == null || !utente.getTipo().equals("Esperto")){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
+
+        Consumer<Recensione> operazione = recensione -> {
+            // Operazioni personalizzate su recensione
+            blogService.modificaRecensione(recensione);
+        };
 
         // Controllo sulla lunghezza del titolo
         if (recensioneForm.getTitolo() == null || recensioneForm.getTitolo().length() > 30) {
@@ -231,6 +228,11 @@ public class BlogController {
         }
 
         Recensione recensione = blogService.trovaRecensioneById(id);
+
+        if (recensione == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recensione non trovata");
+        }
+
         recensione.setTitolo(recensioneForm.getTitolo());
         recensione.setDescrizione(recensioneForm.getDescrizione());
 
@@ -263,6 +265,10 @@ public class BlogController {
         }
 
         Recensione recensione = blogService.trovaRecensioneById(id);
+
+        if (recensione == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recensione non trovata");
+        }
 
         Commento com = new Commento();
         com.setDescription(commento.getDescription());
@@ -312,8 +318,12 @@ public class BlogController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Descrizione del commento troppo lunga");
         }
 
-
         Recensione recensione = blogService.trovaRecensioneById(id);
+
+        if (recensione == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recensione non trovata");
+        }
+
         CommentoRisposta risposta = new CommentoRisposta();
         Optional<Commento> commentoOptional = blogService.trovaCommentoById(commentoPadreId);
         if(commentoOptional.isPresent()) {
@@ -369,7 +379,6 @@ public class BlogController {
             return "redirect:/blog/" + id + "/visualizzaRecensione";
         }
 
-
     return "redirect:/blog/"+id+"/visualizzaRecensione";
     }
 
@@ -380,7 +389,6 @@ public class BlogController {
      * @param idCommentoRisposta per trovare la risposta.
      * @return la pagina di visualizza recensione .
      */
-
 
     @RequestMapping(value= "{id}/cancellaCommentoRisposta", method = RequestMethod.POST)
     public String cancellaRisposta(@PathVariable final int id,final Model model,
@@ -424,6 +432,11 @@ public class BlogController {
            }
 
            Recensione recensione = blogService.trovaRecensioneById(id);
+
+            if (recensione == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recensione non trovata");
+            }
+
            blogService.eliminaRecensione(recensione);
 
            return "redirect:/blog";

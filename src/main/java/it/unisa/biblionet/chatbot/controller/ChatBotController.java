@@ -31,7 +31,7 @@ import java.util.Map;
 public class ChatBotController {
 
     /**
-    il controller per gestire il chatbot
+     Il service per effettuare le operazioni di persistenza.
      */
 
     private final ChatBotService chatBotService;
@@ -105,21 +105,16 @@ public class ChatBotController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Utente non loggato.");
         }
 
-        if(utente.getTipo().equals("Lettore")) {
+        if (!utente.getTipo().equals("Lettore") && !utente.getTipo().equals("Esperto")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo di utente non autorizzato.");
+        }
+
             // Recupera la domanda dal database
-            Risposta risposta = chatBotService.trovaRispostaById(idRisposta);
+            Risposta risposta = chatBotService.generaRisposta(idRisposta);
             List<Domanda> domande = risposta.getDomande();
 
             model.addAttribute("domande", domande);
-        }
 
-        else if(utente.getTipo().equals("Esperto")) {
-            // Recupera la domanda dal database
-            Risposta risposta = chatBotService.trovaRispostaById(idRisposta);
-            List<Domanda> domande = risposta.getDomande();
-
-            model.addAttribute("domande", domande);
-        }
 
         return  "chatbot/domandeFragment :: domandeList";
     }
@@ -135,7 +130,7 @@ public class ChatBotController {
 
     @RequestMapping(value = "/questionario/inizia", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> caricaPrimaDomanda(final Model model,final HttpSession session) {
+    public ResponseEntity<?> caricaPrimaOpzione(final Model model,final HttpSession session) {
         var utente = (UtenteRegistrato) model.getAttribute("loggedUser");
 
         if (utente == null) {
@@ -145,8 +140,8 @@ public class ChatBotController {
         ChatBot chatBLettore = utente.getTipo().equals("Lettore") ?
                 chatBotService.identificaUtente(1) : chatBotService.identificaUtente(2);
 
-        List<Integer> domandeId = new ArrayList<>();
-        session.setAttribute("domandeId", domandeId);
+        List<Integer> opzioniId = new ArrayList<>();
+        session.setAttribute("opzioniId", opzioniId);
         List<Risposta> questionari = chatBLettore.getRisposta1();
 
         if (questionari.isEmpty()) {
@@ -167,17 +162,16 @@ public class ChatBotController {
     /**
      * Restituisce la prossima risposta alla domanda in base all'ID della risposta selezionata.
      @param indiceRisposta per memorizzare la risposta precedente.
-     @param domandaId per memorizza la risposta alla possibile domanda dell'utente.
+     @param opzioneId per memorizza la risposta alla possibile domanda dell'utente.
      return ResponseEntity con i parametri da passare allo script corrispondente.
      */
 
-
     @RequestMapping(value = "/nextDomanda/{indiceRisposta}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> getNextDomanda(
+    public ResponseEntity<?> getNextOpzione(
             final HttpSession session,
             @PathVariable(value = "indiceRisposta") int indiceRisposta,
-            @RequestParam(value = "domandaId", required = false) Integer domandaId) {
+            @RequestParam(value = "domandaId", required = false) Integer opzioneId) {
 
         ChatBot chatBot = (ChatBot) session.getAttribute("chatBot");
         if (chatBot == null) {
@@ -186,8 +180,8 @@ public class ChatBotController {
 
         indiceRisposta++;
 
-        List<Integer> domandeId = (List<Integer>) session.getAttribute("domandeId");
-        domandeId.add(domandaId);
+        List<Integer> opzioniId = (List<Integer>) session.getAttribute("opzioniId");
+        opzioniId.add(opzioneId);
 
         List<Risposta> questionari = chatBot.getRisposta1();
 
@@ -209,6 +203,7 @@ public class ChatBotController {
      * @param session contiene i vari attributi della sessione.
      * return ResponseEntity con il genere preferito dell'utente
      */
+
     @RequestMapping(value = "/calcolaGenere", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> calcolaGenere(
@@ -220,12 +215,16 @@ public class ChatBotController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Utente non loggato.");
         }
 
-        List<Integer> domandeId = (List<Integer>) session.getAttribute("domandeId");
+        List<Integer> opzioniId = (List<Integer>) session.getAttribute("opzioniId");
+
+        if (opzioniId == null || opzioniId.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nessuna opzione selezionata.");
+        }
 
         // Calcola il genere predominante
-        Genere genere = chatBotService.calcolaGenerePreferito(domandeId);
-
+        Genere genere = chatBotService.calcolaGenerePreferito(opzioniId);
 
         return ResponseEntity.ok("Il genere preferito è: " + genere.getNome());
     }
+
 }

@@ -17,6 +17,9 @@ import it.unisa.biblionet.utils.mapper.CategoriaGenereMapper;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Tutte le funzionalità di ChatbotService implementate
+ * */
 
 @Service
 @RequiredArgsConstructor
@@ -41,14 +44,14 @@ public class ChatBotServiceImp implements ChatBotService{
 
     @Override
     public ChatBot identificaUtente(final int id) {
-<span class="pc" id="L44">        return chatDAO.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;ChatBot not found&quot;));</span>
+<span class="pc" id="L47">        return chatDAO.findById(id).orElseThrow(() -&gt; new EntityNotFoundException(&quot;ChatBot not found&quot;));</span>
     }
 
 
     @Override
-    public Risposta trovaRispostaById(int idRisposta) {
-<span class="fc" id="L50">       return rispostaDAO.findById(idRisposta).orElseThrow(</span>
-<span class="fc" id="L51">               () -&gt; new EntityNotFoundException(&quot;Risposta non trovata&quot; + idRisposta));</span>
+    public Risposta generaRisposta(int idRisposta) {
+<span class="fc" id="L53">       return rispostaDAO.findById(idRisposta).orElseThrow(</span>
+<span class="fc" id="L54">               () -&gt; new EntityNotFoundException(&quot;Risposta non trovata&quot; + idRisposta));</span>
     }
 
     /**Implementa la funzionalità di visualizzare tutte le risposte alle domande
@@ -57,36 +60,36 @@ public class ChatBotServiceImp implements ChatBotService{
 
     @Override
     public List&lt;Risposta&gt; visualizzaAllRisposta() {
-<span class="fc" id="L60">        return rispostaDAO.findAllRisposta();</span>
+<span class="fc" id="L63">        return rispostaDAO.findAllRisposta();</span>
     }
 
     /**
      * Implementa la funzionlità di calcola il genere Preferito della persona
-     * @param risposteId una lista di interi
+     * @param opzioneId una lista di interi
      * @return domandaRisposta
      */
 
     @Override
-    public Genere calcolaGenerePreferito(List&lt;Integer&gt; risposteId) {
+    public Genere calcolaGenerePreferito(List&lt;Integer&gt; opzioneId) {
         // Recupera le risposte dal database
-<span class="nc" id="L72">        List&lt;Domanda&gt; risposte = domandaDAO.findAllById(risposteId);</span>
+<span class="nc" id="L75">        List&lt;Domanda&gt; risposte = domandaDAO.findAllById(opzioneId);</span>
 
         // Associa ogni risposta al genere
-<span class="nc" id="L75">        Map&lt;String, Long&gt; conteggioGeneri = risposte.stream()</span>
-<span class="nc" id="L76">                .map(Domanda::getContenuto)            // Ottieni il testo della risposta</span>
-<span class="nc" id="L77">                .map(categoriaGenereMapper::getGenereByRisposta) // Ottieni il genere dalla mappa aggiornata</span>
-<span class="nc" id="L78">                .filter(Objects::nonNull)                      // Filtra risposte senza mapping</span>
-<span class="nc" id="L79">                .collect(Collectors.groupingBy(genere -&gt; genere, Collectors.counting()));</span>
+<span class="nc" id="L78">        Map&lt;String, Long&gt; conteggioGeneri = risposte.stream()</span>
+<span class="nc" id="L79">                .map(Domanda::getContenuto)            // Ottieni il testo della risposta</span>
+<span class="nc" id="L80">                .map(categoriaGenereMapper::getGenereByRisposta) // Ottieni il genere dalla mappa aggiornata</span>
+<span class="nc" id="L81">                .filter(Objects::nonNull)                      // Filtra risposte senza mapping</span>
+<span class="nc" id="L82">                .collect(Collectors.groupingBy(genere -&gt; genere, Collectors.counting()));</span>
 
         // Trova il genere preferito
-<span class="nc" id="L82">        String generePreferitoNome = conteggioGeneri.entrySet().stream()</span>
-<span class="nc" id="L83">                .max(Map.Entry.comparingByValue())</span>
-<span class="nc" id="L84">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Nessun genere predominante trovato!&quot;))</span>
-<span class="nc" id="L85">                .getKey();</span>
+<span class="nc" id="L85">        String generePreferitoNome = conteggioGeneri.entrySet().stream()</span>
+<span class="nc" id="L86">                .max(Map.Entry.comparingByValue())</span>
+<span class="nc" id="L87">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Nessun genere predominante trovato!&quot;))</span>
+<span class="nc" id="L88">                .getKey();</span>
 
         // Recupera il genere dal database
-<span class="nc" id="L88">        return genereDAO.findById(generePreferitoNome)</span>
-<span class="nc" id="L89">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Genere non trovato: &quot; + generePreferitoNome));</span>
+<span class="nc" id="L91">        return genereDAO.findById(generePreferitoNome)</span>
+<span class="nc" id="L92">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Genere non trovato: &quot; + generePreferitoNome));</span>
     }
 }
 

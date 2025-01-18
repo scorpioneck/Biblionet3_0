@@ -37,14 +37,14 @@ public interface ChatBotService {
      * @return tutte le liste;
      */
 
-    Risposta trovaRispostaById(int idRisposta);
+    Risposta generaRisposta(int idRisposta);
 
     /**
      * Calcola il genere preferito basato sulle risposte dell'utente.
-     * @param rispostaId l'ID delle risposte.
+     * @param opzioneId l'ID delle risposte.
      * @return il genere preferito.
      */
 
-    Genere calcolaGenerePreferito(List<Integer> rispostaId);
+    Genere calcolaGenerePreferito(List<Integer> opzioneId);
 
 }

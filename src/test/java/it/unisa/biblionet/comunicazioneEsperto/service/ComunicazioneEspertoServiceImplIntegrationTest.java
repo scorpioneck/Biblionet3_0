@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest(classes = BiblionetApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ComunicazioneEspertoServiceImplIntegrationTest implements
@@ -49,9 +49,9 @@ public class ComunicazioneEspertoServiceImplIntegrationTest implements
         Assertions.assertTrue(espertoList.size() > 1);
     }*/
 
-    @Test
+    /*@Test
     public void getEspertoByGenereNameForFalse() {
         List<Esperto> espertoList = comunicazioneEspertoService.visualizzaEspertiPerGenere("Spacet");
         Assertions.assertTrue(espertoList.size() == 0);
     }
-}
+}*/

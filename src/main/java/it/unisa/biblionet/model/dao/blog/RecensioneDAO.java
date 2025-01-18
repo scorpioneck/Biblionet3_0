@@ -17,9 +17,4 @@ public interface RecensioneDAO extends JpaRepository<Recensione,Integer> {
     @Query("Select re from Recensione re")
     List<Recensione> findAllRecensioni();
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Commento c WHERE c.recensione.id = :recensioneId")
-    void deleteAllCommentiByRecensioneId(@Param("recensioneId") int recensioneId);
-
 }

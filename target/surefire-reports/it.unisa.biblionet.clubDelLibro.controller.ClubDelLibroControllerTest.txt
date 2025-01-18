@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: it.unisa.biblionet.clubDelLibro.controller.ClubDelLibroControllerTest
 -------------------------------------------------------------------------------
-Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.421 s - in it.unisa.biblionet.clubDelLibro.controller.ClubDelLibroControllerTest
+Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.979 s - in it.unisa.biblionet.clubDelLibro.controller.ClubDelLibroControllerTest

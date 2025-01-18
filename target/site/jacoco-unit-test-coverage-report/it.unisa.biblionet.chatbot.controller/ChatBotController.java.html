@@ -31,7 +31,7 @@ import java.util.Map;
 public class ChatBotController {
 
     /**
-    il controller per gestire il chatbot
+     Il service per effettuare le operazioni di persistenza.
      */
 
     private final ChatBotService chatBotService;
@@ -99,29 +99,24 @@ public class ChatBotController {
     @RequestMapping(value = &quot;/{idRisposta}/domanda&quot;, method = RequestMethod.GET)
     public String getRisposte(@PathVariable int idRisposta, Model model) {
 
-<span class="nc" id="L102">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc" id="L102">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (utente == null) {</span>
-<span class="nc" id="L105">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Utente non loggato.&quot;);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (utente == null) {</span>
+<span class="fc" id="L105">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Utente non loggato.&quot;);</span>
         }
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        if(utente.getTipo().equals(&quot;Lettore&quot;)) {</span>
-            // Recupera la domanda dal database
-<span class="nc" id="L110">            Risposta risposta = chatBotService.trovaRispostaById(idRisposta);</span>
-<span class="nc" id="L111">            List&lt;Domanda&gt; domande = risposta.getDomande();</span>
-
-<span class="nc" id="L113">            model.addAttribute(&quot;domande&quot;, domande);</span>
-<span class="nc" id="L114">        }</span>
-
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        else if(utente.getTipo().equals(&quot;Esperto&quot;)) {</span>
-            // Recupera la domanda dal database
-<span class="nc" id="L118">            Risposta risposta = chatBotService.trovaRispostaById(idRisposta);</span>
-<span class="nc" id="L119">            List&lt;Domanda&gt; domande = risposta.getDomande();</span>
-
-<span class="nc" id="L121">            model.addAttribute(&quot;domande&quot;, domande);</span>
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (!utente.getTipo().equals(&quot;Lettore&quot;) &amp;&amp; !utente.getTipo().equals(&quot;Esperto&quot;)) {</span>
+<span class="nc" id="L109">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;Tipo di utente non autorizzato.&quot;);</span>
         }
 
-<span class="nc" id="L124">        return  &quot;chatbot/domandeFragment :: domandeList&quot;;</span>
+            // Recupera la domanda dal database
+<span class="fc" id="L113">            Risposta risposta = chatBotService.generaRisposta(idRisposta);</span>
+<span class="fc" id="L114">            List&lt;Domanda&gt; domande = risposta.getDomande();</span>
+
+<span class="fc" id="L116">            model.addAttribute(&quot;domande&quot;, domande);</span>
+
+
+<span class="fc" id="L119">        return  &quot;chatbot/domandeFragment :: domandeList&quot;;</span>
     }
 
 
@@ -135,71 +130,70 @@ public class ChatBotController {
 
     @RequestMapping(value = &quot;/questionario/inizia&quot;, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity&lt;?&gt; caricaPrimaDomanda(final Model model,final HttpSession session) {
-<span class="nc" id="L139">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+    public ResponseEntity&lt;?&gt; caricaPrimaOpzione(final Model model,final HttpSession session) {
+<span class="fc" id="L134">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (utente == null) {</span>
-<span class="nc" id="L142">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Utente non loggato.&quot;);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (utente == null) {</span>
+<span class="fc" id="L137">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Utente non loggato.&quot;);</span>
         }
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        ChatBot chatBLettore = utente.getTipo().equals(&quot;Lettore&quot;) ?</span>
-<span class="nc" id="L146">                chatBotService.identificaUtente(1) : chatBotService.identificaUtente(2);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        ChatBot chatBLettore = utente.getTipo().equals(&quot;Lettore&quot;) ?</span>
+<span class="pc" id="L141">                chatBotService.identificaUtente(1) : chatBotService.identificaUtente(2);</span>
 
-<span class="nc" id="L148">        List&lt;Integer&gt; domandeId = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L149">        session.setAttribute(&quot;domandeId&quot;, domandeId);</span>
-<span class="nc" id="L150">        List&lt;Risposta&gt; questionari = chatBLettore.getRisposta1();</span>
+<span class="fc" id="L143">        List&lt;Integer&gt; opzioniId = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L144">        session.setAttribute(&quot;opzioniId&quot;, opzioniId);</span>
+<span class="fc" id="L145">        List&lt;Risposta&gt; questionari = chatBLettore.getRisposta1();</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (questionari.isEmpty()) {</span>
-<span class="nc" id="L153">            return ResponseEntity.ok(Map.of(&quot;questionarioCompletato&quot;, true));</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (questionari.isEmpty()) {</span>
+<span class="fc" id="L148">            return ResponseEntity.ok(Map.of(&quot;questionarioCompletato&quot;, true));</span>
         }
 
-<span class="nc" id="L156">        session.setAttribute(&quot;chatBot&quot;,chatBLettore);</span>
+<span class="nc" id="L151">        session.setAttribute(&quot;chatBot&quot;,chatBLettore);</span>
 
         // Restituisce la prima domanda
-<span class="nc" id="L159">        Risposta primaRisposta = questionari.get(0);</span>
-<span class="nc" id="L160">        return ResponseEntity.ok(Map.of(</span>
+<span class="nc" id="L154">        Risposta primaRisposta = questionari.get(0);</span>
+<span class="nc" id="L155">        return ResponseEntity.ok(Map.of(</span>
                 &quot;prossimaRisposta&quot;, primaRisposta,
-<span class="nc" id="L162">                &quot;indiceRisposta&quot;, 0,</span>
-<span class="nc" id="L163">                &quot;questionarioCompletato&quot;, false</span>
+<span class="nc" id="L157">                &quot;indiceRisposta&quot;, 0,</span>
+<span class="nc" id="L158">                &quot;questionarioCompletato&quot;, false</span>
         ));
     }
 
     /**
      * Restituisce la prossima risposta alla domanda in base all'ID della risposta selezionata.
      @param indiceRisposta per memorizzare la risposta precedente.
-     @param domandaId per memorizza la risposta alla possibile domanda dell'utente.
+     @param opzioneId per memorizza la risposta alla possibile domanda dell'utente.
      return ResponseEntity con i parametri da passare allo script corrispondente.
      */
 
-
     @RequestMapping(value = &quot;/nextDomanda/{indiceRisposta}&quot;, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity&lt;?&gt; getNextDomanda(
+    public ResponseEntity&lt;?&gt; getNextOpzione(
             final HttpSession session,
             @PathVariable(value = &quot;indiceRisposta&quot;) int indiceRisposta,
-            @RequestParam(value = &quot;domandaId&quot;, required = false) Integer domandaId) {
+            @RequestParam(value = &quot;domandaId&quot;, required = false) Integer opzioneId) {
 
-<span class="nc" id="L182">        ChatBot chatBot = (ChatBot) session.getAttribute(&quot;chatBot&quot;);</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">        if (chatBot == null) {</span>
-<span class="nc" id="L184">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;ChatBot non trovato nella sessione.&quot;);</span>
+<span class="fc" id="L176">        ChatBot chatBot = (ChatBot) session.getAttribute(&quot;chatBot&quot;);</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (chatBot == null) {</span>
+<span class="fc" id="L178">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;ChatBot non trovato nella sessione.&quot;);</span>
         }
 
-<span class="nc" id="L187">        indiceRisposta++;</span>
+<span class="fc" id="L181">        indiceRisposta++;</span>
 
-<span class="nc" id="L189">        List&lt;Integer&gt; domandeId = (List&lt;Integer&gt;) session.getAttribute(&quot;domandeId&quot;);</span>
-<span class="nc" id="L190">        domandeId.add(domandaId);</span>
+<span class="fc" id="L183">        List&lt;Integer&gt; opzioniId = (List&lt;Integer&gt;) session.getAttribute(&quot;opzioniId&quot;);</span>
+<span class="fc" id="L184">        opzioniId.add(opzioneId);</span>
 
-<span class="nc" id="L192">        List&lt;Risposta&gt; questionari = chatBot.getRisposta1();</span>
+<span class="fc" id="L186">        List&lt;Risposta&gt; questionari = chatBot.getRisposta1();</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (indiceRisposta &gt;= questionari.size()) {</span>
-<span class="nc" id="L195">            return ResponseEntity.ok(Map.of(&quot;questionarioCompletato&quot;, true));</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (indiceRisposta &gt;= questionari.size()) {</span>
+<span class="nc" id="L189">            return ResponseEntity.ok(Map.of(&quot;questionarioCompletato&quot;, true));</span>
         }
 
-<span class="nc" id="L198">        Risposta prossimaRisposta= questionari.get(indiceRisposta);</span>
-<span class="nc" id="L199">        return ResponseEntity.ok(Map.of(</span>
+<span class="fc" id="L192">        Risposta prossimaRisposta= questionari.get(indiceRisposta);</span>
+<span class="fc" id="L193">        return ResponseEntity.ok(Map.of(</span>
                 &quot;prossimaRisposta&quot;, prossimaRisposta,
-<span class="nc" id="L201">                &quot;indiceRisposta&quot;, indiceRisposta,</span>
-<span class="nc" id="L202">                &quot;questionarioCompletato&quot;, false</span>
+<span class="fc" id="L195">                &quot;indiceRisposta&quot;, indiceRisposta,</span>
+<span class="fc" id="L196">                &quot;questionarioCompletato&quot;, false</span>
         ));
     }
 
@@ -209,24 +203,29 @@ public class ChatBotController {
      * @param session contiene i vari attributi della sessione.
      * return ResponseEntity con il genere preferito dell'utente
      */
+
     @RequestMapping(value = &quot;/calcolaGenere&quot;, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity&lt;String&gt; calcolaGenere(
             final Model model,HttpSession session) {
 
         // Recupera l'utente loggato
-<span class="nc" id="L218">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (utente == null) {</span>
-<span class="nc" id="L220">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Utente non loggato.&quot;);</span>
+<span class="fc" id="L213">        var utente = (UtenteRegistrato) model.getAttribute(&quot;loggedUser&quot;);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (utente == null) {</span>
+<span class="fc" id="L215">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Utente non loggato.&quot;);</span>
         }
 
-<span class="nc" id="L223">        List&lt;Integer&gt; domandeId = (List&lt;Integer&gt;) session.getAttribute(&quot;domandeId&quot;);</span>
+<span class="fc" id="L218">        List&lt;Integer&gt; opzioniId = (List&lt;Integer&gt;) session.getAttribute(&quot;opzioniId&quot;);</span>
+
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">        if (opzioniId == null || opzioniId.isEmpty()) {</span>
+<span class="nc" id="L221">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Nessuna opzione selezionata.&quot;);</span>
+        }
 
         // Calcola il genere predominante
-<span class="nc" id="L226">        Genere genere = chatBotService.calcolaGenerePreferito(domandeId);</span>
+<span class="fc" id="L225">        Genere genere = chatBotService.calcolaGenerePreferito(opzioniId);</span>
 
-
-<span class="nc" id="L229">        return ResponseEntity.ok(&quot;Il genere preferito è: &quot; + genere.getNome());</span>
+<span class="fc" id="L227">        return ResponseEntity.ok(&quot;Il genere preferito è: &quot; + genere.getNome());</span>
     }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

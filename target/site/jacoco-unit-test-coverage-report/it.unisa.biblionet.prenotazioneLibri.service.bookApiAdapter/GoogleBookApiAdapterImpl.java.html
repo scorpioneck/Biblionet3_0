@@ -74,10 +74,10 @@ import java.util.Base64;
 
 <span class="fc" id="L75">                return creaLibroDaResponse(stringBuilder, isbn);</span>
             }
-<span class="fc" id="L77">        } catch (Exception e) {</span>
-<span class="fc" id="L78">            e.printStackTrace();</span>
+<span class="nc" id="L77">        } catch (Exception e) {</span>
+<span class="nc" id="L78">            e.printStackTrace();</span>
         }
-<span class="fc" id="L80">        return null;</span>
+<span class="nc" id="L80">        return null;</span>
     }
 
     /**
@@ -156,8 +156,8 @@ import java.util.Base64;
                 }
 <span class="fc" id="L157">                byte[] bytes = output.toByteArray();</span>
 <span class="fc" id="L158">                base64Image = Base64.getEncoder().encodeToString(bytes);</span>
-<span class="fc" id="L159">            } catch (Exception e) {</span>
-<span class="fc" id="L160">                System.out.println(e);</span>
+<span class="nc" id="L159">            } catch (Exception e) {</span>
+<span class="nc" id="L160">                System.out.println(e);</span>
 <span class="fc" id="L161">            }</span>
             //Creazione dell'oggetto Libro
 <span class="fc" id="L163">            libro.setTitolo(titolo);</span>

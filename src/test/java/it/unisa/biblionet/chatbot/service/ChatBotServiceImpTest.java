@@ -113,7 +113,7 @@ public class ChatBotServiceImpTest {
         when(rispostaDAO.findById(1)).thenReturn(Optional.of(risposta));
 
         // Chiamata del metodo da testare
-        Risposta result = chatBotService.trovaRispostaById(1);
+        Risposta result = chatBotService.generaRisposta(1);
 
         // Asserzioni
         assertNotNull(result); // Assicura che il risultato non sia nullo
@@ -135,7 +135,7 @@ public class ChatBotServiceImpTest {
 
         // Test per verificare che venga lanciata l'eccezione
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            chatBotService.trovaRispostaById(99);
+            chatBotService.generaRisposta(99);
         });
 
         // Asserzioni sull'eccezione
