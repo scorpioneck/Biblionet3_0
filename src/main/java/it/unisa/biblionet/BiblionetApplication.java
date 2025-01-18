@@ -2238,9 +2238,18 @@ public class BiblionetApplication {
         //-------------------------------Inserimento Recensioni-------------------------------------------------
         out.info("*************************** Recensioni create 3/3 ***************************");
 
-        Recensione recensione1 = new Recensione("Prova","prova",libro1,esperto1);
-        Recensione recensione2 = new Recensione("Prova2", "Era Bello1", libro4, esperto4);
-        Recensione recensione3 = new Recensione("Prova3", "Era Bello2", libro2, esperto3);
+        Recensione recensione1 = new Recensione("Recensione: Harry Potter CDS","Harry Potter e la Camera dei Segreti prosegue l'avventura del giovane mago con misteri e pericoli a Hogwarts. Tra leggende, creature magiche e amicizie, il romanzo combina suspense, " +
+                "umorismo e coraggio, affrontando temi " +
+                "come il pregiudizio e la lealtà",libro1,esperto1);
+
+        Recensione recensione2 = new Recensione("Recensione: the black swam", "The Black Swan esplora gli eventi rari e " +
+                "imprevedibili che cambiano il corso della storia. Con un mix di filosofia, economia e matematica, " +
+                "il libro sfida la nostra comprensione del rischio e del caso." ,libro4, esperto4);
+
+        Recensione recensione3 = new Recensione("Bellissimo Trono di spade! ", "Il Trono di Spade," +
+                "Le Cronache del Ghiaccio e del Fuoco, " +
+                "è un capolavoro fantasy che intreccia politica, intrighi e battaglie nei Sette Regni di Westeros, " +
+                "con personaggi complessi come gli Stark e i Lannister.", libro2, esperto3);
 
         recensioneDAO.save(recensione1);
         recensioneDAO.save(recensione2);

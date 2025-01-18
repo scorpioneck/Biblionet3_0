@@ -47,11 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // Se abbiamo chatState in sessionStorage, lo ripristiniamo
                     const salvato = sessionStorage.getItem("chatState");
-                    if (salvato) {
-                        ripristinaStatoChat();
+                    const tipoUtenteSalvato = sessionStorage.getItem("tipoUtente");
+
+                    if (salvato && tipoUtenteSalvato === data.nome) {
+                           ripristinaStatoChat();
+
                     } else {
-                        initializeChat();
+                        sessionStorage.setItem("tipoUtente", data.nome);
                         chatState.tipoUtente = data.nome;
+                        console.log("TipoUtente salvatoPrimadiInitialate:"+ chatState.tipoUtente);
+                        initializeChat();
+
                     }
                 } else {
                     console.warn("[verificaStatoUtente] Utente non loggato. Resetto la chat.");
@@ -138,7 +144,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // ---------------------------------------------------
     function salvaStatoChat() {
         sessionStorage.setItem("chatState", JSON.stringify(chatState));
+        sessionStorage.setItem("tipoUtente ", chatState.tipoUtente);
         console.log("[salvaStatoChat] Stato salvato:", chatState);
+        console.log("[salvaStatoChat] Stato tipoUtente salvato", chatState.tipoUtente);
     }
 
     // ---------------------------------------------------
